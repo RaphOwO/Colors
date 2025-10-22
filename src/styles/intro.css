@@ -76,7 +76,7 @@ h1:hover::before {
   opacity: 1;
 }
 
-h2 {
+h2.flicker {
   margin-top: 1rem;
   color: hsl(0, 0%, 45%);
   font-family: 'Montserrat', sans-serif;
@@ -105,4 +105,8 @@ h2 {
 @keyframes huecycle {
   0% { filter: blur(140px) hue-rotate(0deg); }
   100% { filter: blur(140px) hue-rotate(360deg); }
+}
+
+h1:active ~ .intro {
+  opacity: 0;
 }

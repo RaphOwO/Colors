@@ -16,11 +16,11 @@ function Intro({ onDone }) {
   }, [transition]);
 
   return (
-    <div className={'intro ${transition ? "fade-out" : ""}'}>
+    <div className={'intro'}>
         <h1 data-text="COLORS" onClick={handleClick}>
             COLORS
         </h1>
-        <h2>Click the logo to Continue</h2>
+        <h2 className="flicker">Click the logo to Continue</h2>
     </div>
   );
 };
