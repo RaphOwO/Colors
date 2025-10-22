@@ -3,6 +3,7 @@
     font-weight: bold;
     font-size: 2rem;
     margin-left: 20px;
+    transition: opacity 0.4s ease;
 }
 
 ul {
@@ -16,6 +17,12 @@ ul {
     margin: 0;
     margin-right: 2rem;
     margin-left: auto;
+    background: transparent;
+    transition:
+        transform 0.6s ease-in-out,
+        opacity 0s ease-in-out,
+        background-color 0s ease-in-out;
+    transform: translateX(0);
 }
 
 nav {
@@ -50,53 +57,73 @@ ul a:hover {
     border-radius: 9999px;
     background-color: var(--nav-color);
     z-index: 11;
-}
-
-#sidebar-active:checked ~ ul {
-    margin-right: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    width: 450px;
-    height: 100%;
-    background-color: var(--nav-color);
-    box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
-}
-
-#sidebar-active:checked ~ .button {
-    display: block;
-    filter: invert(100%);
-    margin-left: auto;
-}
-
-#sidebar-active:checked ~ ul a {
-    filter: invert(100%);
-    box-sizing: border-box;
-    height: auto;
-    width: 100%;
-    padding: 20px 30px;
-    justify-content: flex-start;
+    transition: filter 0.3s ease;
 }
 
 #sidebar-active {
     display: none;
 }
 
+/* --- When sidebar is active --- */
+#sidebar-active:checked ~ ul {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 450px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-right: 0;
+    padding-top: 80px;
+    padding-left: 30px;
+    background-color: var(--nav-color);
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
+
+    /* Animation start state */
+    transform: translateX(100%);
+    opacity: 0;
+    animation: slideInSidebar 0.8s ease forwards;
+    animation-delay: 0.1s;
+}
+
+/* --- Animate slide-in after layout change --- */
+@keyframes slideInSidebar {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* --- Fade out navbar text when sidebar is active --- */
+#sidebar-active:checked ~ .home,
+#sidebar-active:checked ~ nav a:not(.button) {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* --- Adjust hamburger button --- */
+#sidebar-active:checked ~ .button {
+    display: block;
+    filter: invert(100%);
+    margin-left: auto;
+}
+
+/* --- Sidebar links --- */
+#sidebar-active:checked ~ ul a {
+    filter: invert(100%);
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    box-sizing: border-box;
+}
+
 @media(max-width: 450px) {
-    ul {
-        display: none;
-    }
-
-    .button {
-        margin-left: auto;
-    }
-
     #sidebar-active:checked ~ ul {
-        display: flex;
         width: 100%;
     }
-    
 }
