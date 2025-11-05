@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./../styles/navbar.css";
 
-function Navbar({ onLoginClick }) {
+function Navbar({ onLoginClick , user ,onLogOutClick}) {
   return (
     <nav>
       <Link to="/" className="home">COLORS</Link>
@@ -12,7 +12,9 @@ function Navbar({ onLoginClick }) {
         <label htmlFor="sidebar-active" className="close-sidebar"></label>
         <li><Link to="/color">Color</Link></li>
         <li><Link to="/composition">Composition</Link></li>
-        <li><button onClick={onLoginClick}>Login</button></li>
+        {user ? (<li><button onClick={onLogOutClick}>Logout</button></li>)
+          : (<li><button onClick={onLoginClick}>Login</button></li>)
+        }
       </ul>
       <label htmlFor="sidebar-active" className="button"></label>
     </nav>
