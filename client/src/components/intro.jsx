@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./../styles/intro.css";
+import "../styles/intro.css";
 
 function Intro({ onDone }) {
   const [transition, setTransition] = useState(false);
