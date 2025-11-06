@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./../styles/navbar.css";
+import { isLoggedIn } from "../utils/checkLogin";
 
-function Navbar({ onLoginClick , user ,onLogOutClick}) {
+
+function Navbar({ onLoginClick , onLogOutClick}) {
+
   return (
     <nav>
       <Link to="/" className="home">COLORS</Link>
@@ -12,7 +15,7 @@ function Navbar({ onLoginClick , user ,onLogOutClick}) {
         <label htmlFor="sidebar-active" className="close-sidebar"></label>
         <li><Link to="/color">Color</Link></li>
         <li><Link to="/composition">Composition</Link></li>
-        {user ? (<li><button onClick={onLogOutClick}>Logout</button></li>)
+        {isLoggedIn() ? (<li><button onClick={onLogOutClick}>Logout</button></li>)
           : (<li><button onClick={onLoginClick}>Login</button></li>)
         }
       </ul>
