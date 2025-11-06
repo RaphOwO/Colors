@@ -42,22 +42,29 @@ function App() {
   }
 
   return (
-    <Router> 
-      {showIntro ? (
-        <Intro onDone={() => setShowIntro(false)} />
-      ) : (
-        <>
-          <Navbar onLoginClick={() => setShowLogin(true)} onLogOutClick={handleLogout} user={user} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/color" element={<Color />} />
-            <Route path='/composition' element={<Composition />} />
-          </Routes>
-          <AnimatePresence mode='wait'>
-            {showLogin && <Login onClose={() => setShowLogin(false)} setUser={setUser} />}
-          </AnimatePresence>
-        </>
-      )}
+    <Router>
+      <Navbar
+        onLoginClick={() => setShowLogin(true)}
+        onLogOutClick={handleLogout}
+        user={user}
+      />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/color" element={<Color />} />
+        <Route path="/composition" element={<Composition />} />
+      </Routes>
+
+      {/* Intro overlay */}
+      <AnimatePresence>
+        {showIntro && <Intro onDone={() => setShowIntro(false)} />}
+      </AnimatePresence>
+
+      {/* Login popup */}
+      <AnimatePresence>
+        {showLogin && (
+          <Login onClose={() => setShowLogin(false)} setUser={setUser} />
+        )}
+      </AnimatePresence>
     </Router>
   );
 }

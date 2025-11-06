@@ -6,23 +6,37 @@
     transition: opacity 0.4s ease;
 }
 
-ul {
+ul.nav {
+    position: fixed;
     list-style: none;
     display: flex;
     font-family: 'Montserrat', serif;
-    font-weight: 100;
+    font-weight: 300;
     font-size: 1.2rem;
+    align-items: center;
     gap: 2rem;
-    padding: 0;
     margin: 0;
-    margin-right: 2rem;
-    margin-left: auto;
+    right: 7rem;
     background: transparent;
-    transition:
-        transform 0.6s ease-in-out,
-        opacity 0s ease-in-out,
-        background-color 0s ease-in-out;
-    transform: translateX(0);
+    transition: opacity 0.4s ease;
+    z-index: 7; 
+}
+
+ul.sidebar {
+    position: fixed;
+    top: 0;
+    right: -550px;
+    width: 450px;
+    height: 100vh;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 0;
+    padding-top: 80px;
+    font-size: 1.5rem;
+    background-color: whitesmoke;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
+    transition: right 1s ease-in-out;
+    z-index: 9; 
 }
 
 nav {
@@ -40,90 +54,142 @@ nav {
     z-index: 1;
 }
 
-nav a, .home:hover {
-    color: var(--nav-color);
-}
-
-ul a:hover {
-    color: var(--nav-color);
-}
-
 .button {
     position: relative;
     margin: 0;
+    margin-left: auto;
     margin-right: 2rem;
     width: 40px;
     height: 40px;
     border-radius: 9999px;
-    background-color: var(--nav-color);
+    background-color: whitesmoke;
     z-index: 11;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
     transition: filter 0.3s ease;
+}
+
+ul.nav a,
+ul.sidebar a {
+    font: inherit;
+    color: inherit;
+    text-decoration: none; 
+}
+
+ul.sidebar li button,
+ul.nav li button {
+    all: unset; 
+    font: inherit; 
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    display: block;
+    padding: 0;
+}
+
+ul.sidebar li {
+    opacity: 0;
+    filter: invert(100%);
+    display: block;
+    z-index: 7;
+    height: auto;
+    padding: 40px 50px;
+    justify-content: flex-start;
+}
+
+ul.nav li, ul.sidebar li {
+    transition:
+        font-weight 0.4s ease,
+        font-style 0.4s ease,
+        letter-spacing 0.4s ease,
+        opacity 0.8s ease;
+}
+
+nav a, .home:hover {
+    color: var(--nav-color);
+}
+
+ul.sidebar a:hover, ul.nav a:hover {
+    color: var(--nav-color);
+}
+
+ul.nav li:hover, ul.sidebar li:hover {
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+    letter-spacing: 1.5px;
+}
+
+.lineTop, .lineBottom {
+    margin: 0 auto;
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 2px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    left: 0;
+    right: 0;
+    transform: rotate(0deg);
+    transition: all 0.4s;
+}
+
+.lineTop {
+    top: 1em;
+}
+
+.lineBottom {
+    bottom: 1em;
 }
 
 #sidebar-active {
     display: none;
 }
 
-/* --- When sidebar is active --- */
-#sidebar-active:checked ~ ul {
-    position: fixed;
-    top: 0;
+#sidebar-active:checked ~ ul.sidebar {
     right: 0;
-    height: 100vh;
-    width: 450px;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-right: 0;
-    padding-top: 80px;
-    padding-left: 30px;
-    background-color: var(--nav-color);
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
+}
 
-    /* Animation start state */
-    transform: translateX(100%);
+#sidebar-active:checked ~ ul.sidebar li {
+    opacity: 1;
+}
+
+#sidebar-active:checked ~ ul.nav {
     opacity: 0;
-    animation: slideInSidebar 0.8s ease forwards;
-    animation-delay: 0.1s;
 }
 
-/* --- Animate slide-in after layout change --- */
-@keyframes slideInSidebar {
-    0% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* --- Fade out navbar text when sidebar is active --- */
-#sidebar-active:checked ~ .home,
-#sidebar-active:checked ~ nav a:not(.button) {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-/* --- Adjust hamburger button --- */
 #sidebar-active:checked ~ .button {
     display: block;
     filter: invert(100%);
     margin-left: auto;
 }
 
-/* --- Sidebar links --- */
-#sidebar-active:checked ~ ul a {
-    filter: invert(100%);
-    display: block;
+#sidebar-active:checked ~ #overlay {
+    height: 100%;
     width: 100%;
-    padding: 15px 0;
-    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 8;
+}
+
+#sidebar-active:checked ~ .button .lineTop {
+    top: 1.2em;
+    transform: rotate(135deg);
+    background-color: rgba(0, 0, 0, 1);
+}
+
+#sidebar-active:checked ~ .button .lineBottom {
+    bottom: 1.2em;
+    transform: rotate(225deg);
+    background-color: rgba(0, 0, 0, 1);
 }
 
 @media(max-width: 450px) {
-    #sidebar-active:checked ~ ul {
+    ul.sidebar {
         width: 100%;
+    }
+
+    ul.nav li {
+        display: none;
     }
 }
