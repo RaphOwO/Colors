@@ -21,6 +21,7 @@ function Intro({ onDone }) {
           }}
         >
           <motion.h1
+            className="intro-text"
             data-text="COLORS"
             onClick={handleClick}
             initial={{ opacity: 0, y: 30 }}

@@ -3,7 +3,7 @@
     font-weight: bold;
     font-size: 2rem;
     margin-left: 20px;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease, color 0.6s ease;
 }
 
 ul.nav {
@@ -50,6 +50,7 @@ nav {
     display: flex;
     align-items: center;
     background-color: transparent;
+    color: var(--nav-color);
     padding: 10px;
     z-index: 1;
 }
@@ -89,7 +90,7 @@ ul.nav li button {
 
 ul.sidebar li {
     opacity: 0;
-    filter: invert(100%);
+    color: black;
     display: block;
     z-index: 7;
     height: auto;
@@ -102,7 +103,8 @@ ul.nav li, ul.sidebar li {
         font-weight 0.4s ease,
         font-style 0.4s ease,
         letter-spacing 0.4s ease,
-        opacity 0.8s ease;
+        opacity 0.8s ease,
+        color 0.6s ease;
 }
 
 nav a, .home:hover {
@@ -116,7 +118,11 @@ ul.sidebar a:hover, ul.nav a:hover {
 ul.nav li:hover, ul.sidebar li:hover {
     font-family: "Times New Roman", Times, serif;
     font-style: italic;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
+}
+
+button:hover {
+    background-color: rgb(216, 216, 216);
 }
 
 .lineTop, .lineBottom {
@@ -182,6 +188,106 @@ ul.nav li:hover, ul.sidebar li:hover {
     bottom: 1.2em;
     transform: rotate(225deg);
     background-color: rgba(0, 0, 0, 1);
+}
+
+.dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-btn {
+    all: unset;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.3rem;
+}
+
+.caret {
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 0.2rem;
+    transition: transform 0.3s ease;
+}
+
+.nav .dropdown-btn {
+  white-space: nowrap;         
+  width: auto;
+  justify-content: flex-start;
+}
+
+.dropdown-menu {
+    list-style: none;
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    color: var(--nav-color);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    margin: 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    width: 100px;
+    z-index: 9;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdown-menu li {
+    all: revert;
+    font-family: 'Montserrat', serif;
+    font-style: normal;
+    letter-spacing: 1px;
+    font-weight: 150;
+}
+
+.dropdown-btn:has(+ .dropdown-menu.show) .caret {
+    transform: rotate(180deg);
+}
+
+.sidebar-dropdown .dropdown-menu.sidebar {
+    display: inline-flex;
+    position: static;
+    background: none;
+    box-shadow: none;
+    text-align: left;
+    margin: 0;
+    padding-left: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+}
+
+.sidebar-dropdown .dropdown-menu.sidebar.show {
+    max-height: 150px;
+}
+
+.sidebar-dropdown .dropdown-menu.sidebar li {
+    display: inline-block;
+    width: auto;
+    padding: 0.3rem 0;
+    color: black;
+}
+
+.sidebar-dropdown .dropdown-menu.sidebar a:hover {
+    padding: 0.3rem 0;
+    width: auto;
+    color: black;
 }
 
 @media(max-width: 450px) {

@@ -17,7 +17,7 @@
   opacity: 0;
 }
 
-h1 {
+h1.intro-text {
   user-select: none;
   font-family: 'Ananias';
   font-size: clamp(5rem, 8.5vw, 8rem);
@@ -28,7 +28,7 @@ h1 {
   transition: transform 0.6s ease, color 1.5s ease;
 }
 
-h1::after {
+h1.intro-text::after {
   content: attr(data-text);
   position: absolute;
   inset: 0;
@@ -41,7 +41,7 @@ h1::after {
   transition: opacity 1.5s ease;
 }
 
-h1::before {
+h1.intro-text::before {
   content: "";
   position: absolute;
   top: -150px; left: -150px; right: -150px; bottom: -150px;
@@ -64,16 +64,16 @@ h1::before {
   transition: opacity 0.8s ease;
 }
 
-h1:hover {
+h1.intro-text:hover {
   color:white;
   transform: scale(1.2);
 }
 
-h1:hover::after {
+h1.intro-text:hover::after {
   opacity: 0;
 }
 
-h1:hover::before {
+h1.intro-text:hover::before {
   opacity: 1;
 }
 
@@ -108,6 +108,6 @@ h2.flicker {
   100% { filter: blur(140px) hue-rotate(360deg); }
 }
 
-h1:active ~ .intro {
+h1.intro:active ~ .intro {
   opacity: 0;
 }
