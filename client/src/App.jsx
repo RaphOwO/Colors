@@ -8,6 +8,7 @@ import Home from './pages/home.jsx';
 import Color from './pages/color.jsx';
 import Composition from './pages/composition.jsx';
 import Login from './components/login.jsx';
+import { getCurrentUser } from "./utils/auth";
 
 function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -15,30 +16,16 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    fetch("http://localhost:8000/user", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          console.error(data.error);
-        } else {
-          setUser(data);
-        }
-      })
-      .catch((err) => console.error(err));
+    async function fetchUser() {
+      const data = await getCurrentUser();
+      setUser(data);
+    }
+    fetchUser();
   }, []);
 
   const handleLogout = () =>{
-    console.log(user)
     localStorage.removeItem("token")
     setUser(null)
-    console.log(user)
   }
 
   return (
