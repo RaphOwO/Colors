@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./../styles/navbar.css";
+import { isLoggedIn } from "../utils/checkLogin";
 
 function Dropdown({ title, links, name, isSidebar }) {
   const [open, setOpen] = useState(false);

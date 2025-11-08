@@ -1,6 +1,10 @@
+import { useState,useEffect } from "react";
+import { isLoggedIn } from "../utils/checkLogin";
+
 function Composition() {
     return (
         <div>
+            {isLoggedIn() ? <p>hi</p>:<p>no</p>}
             This is composition
         </div>
     )
