@@ -1,5 +1,5 @@
 .login-box {
-  background: rgba(255, 255, 255, 0.15); /* semi-transparent */
+  background: rgba(0, 0, 0, 0.25); 
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-radius: 20px;
@@ -27,7 +27,7 @@
 }
 
 .login-box input {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   padding: 0.8rem 1rem;
@@ -42,7 +42,7 @@
 
 .login-box input:focus {
   border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .login-box button[type="submit"] {
@@ -78,7 +78,6 @@
   text-decoration: underline;
 }
 
-/* background overlay */
 .login-overlay {
   position: fixed;
   inset: 0;
