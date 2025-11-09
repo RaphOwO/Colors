@@ -56,9 +56,8 @@ function Sidebar({ className, user, onLoginClick, onLogOutClick }) {
         title="Color"
         name="color"
         links={[
-          { to: "/color", label: "Palette" },
-          { to: "/color/harmony", label: "Harmony" },
-          { to: "/color/shading", label: "Shading" },
+          { to: "/color/theory", label: "Theory" },
+          { to: "/color/meaning", label: "Meaning" },
         ]}
         isSidebar={className === "sidebar"}
       />
@@ -86,7 +85,6 @@ function Sidebar({ className, user, onLoginClick, onLogOutClick }) {
 function Navbar({ onLoginClick, user, onLogOutClick }) {
   const location = useLocation();
 
-  // Whenever the route changes, close the sidebar
   useEffect(() => {
     const sidebarCheckbox = document.getElementById("sidebar-active");
     if (sidebarCheckbox) sidebarCheckbox.checked = false;

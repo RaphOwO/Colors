@@ -66,10 +66,10 @@ h1.home-title {
   align-items: center;
   justify-content: space-between;
   gap: 3rem;
-  min-height: 30vh;
+  min-height: 10vh;
   position: relative;
   overflow: visible;
-  padding: 10%;
+  padding: 5% 10% 10% 10%;
 }
 
 .topic-section.right {
@@ -85,13 +85,13 @@ h1.home-title {
 }
 
 .topic-text h2 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
   font-weight: 700;
 }
 
 .topic-text p {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: rgba(255, 255, 255, 0.85); /* adapt for dark backgrounds */
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
 }
@@ -120,12 +120,18 @@ h1.home-title {
     text-align: center;     
     gap: 2rem;
     min-height: auto;
+    flex-direction: column;
   }
 
   .topic-text,
   .topic-side {
     flex: 1 1 100%;
     max-width: 100%;
+    text-align: center;         /* ensures text inside .topic-text centers */
+    display: flex;
+    flex-direction: column;
+    align-items: center;        /* centers inline elements like h2/p */
+    justify-content: center;
   }
 
   .topic-text h2,
@@ -137,8 +143,6 @@ h1.home-title {
     font-size: 2rem;
   }
 }
-
-
 
 .fade-section {
   opacity: 0;

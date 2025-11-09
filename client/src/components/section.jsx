@@ -63,7 +63,6 @@ function Section({ color, children }) {
         // This section is actually the one under the navbar — set the color.
         const initialColor = section.getAttribute('data-nav-color');
         root.style.setProperty('--nav-color', initialColor);
-        console.log('Initial color set (by elementsFromPoint) →', initialColor);
       }
     } catch (err) {
       // elementsFromPoint can throw in some weird cases; fallback to boundingClientRect check
@@ -71,7 +70,6 @@ function Section({ color, children }) {
       if (rect.top <= probeY && rect.bottom >= probeY) {
         const initialColor = section.getAttribute('data-nav-color');
         root.style.setProperty('--nav-color', initialColor);
-        console.log('Initial color set (fallback) →', initialColor);
       }
     }
 
