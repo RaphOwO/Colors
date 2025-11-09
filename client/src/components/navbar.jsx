@@ -73,6 +73,10 @@ function Sidebar({ className, user, onLoginClick, onLogOutClick }) {
         isSidebar={className === "sidebar"}
       />
 
+      <li>
+        <Link to="/test">Test</Link>
+      </li>
+
       {user ? (
         <li><button onClick={onLogOutClick}>Logout</button></li>
       ) : (

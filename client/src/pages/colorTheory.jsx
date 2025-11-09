@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Section from '../components/section.jsx';
 import '../styles/theory.css';
 import '../App.css';
+import colorData from '../content/data.json'; 
 
 const ColorWheelPicker = ({ onColorChange }) => {
   const canvasRef = useRef(null);
@@ -504,59 +505,56 @@ function ColorTheory() {
           </div>
           <div className='color-mode-section' data-mode="monochromatic">
             <section ref={setSecRef} className='section'>
-              <h2>Monochromatic</h2>
-              <p>Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look.</p>
+              <h2>{colorData[0].topic}</h2>
+              <p>{colorData[0].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="complementary">
             <section ref={setSecRef} className='section'>
-              <h2>Complementary</h2>
-              <p>Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination – together, these colors will appear brighter and more prominent.</p>
+              <h2>{colorData[1].topic}</h2>
+              <p>{colorData[1].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="analogous">
             <section ref={setSecRef} className='section'>
-              <h2>Analogous</h2>
-              <p>Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents.</p>
+              <h2>{colorData[2].topic}</h2>
+              <p>{colorData[2].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="triadic">
             <section ref={setSecRef} className='section'>
-              <h2>Triadic</h2>
-              <p>Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination — making it more versatile. This combination creates bold, vibrant color palettes.</p>
+              <h2>{colorData[3].topic}</h2>
+              <p>{colorData[3].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="tetradic">
             <section ref={setSecRef} className='section'>
-              <h2>Tetradic</h2>
-              <p>Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance,</p>
+            <h2>{colorData[4].topic}</h2>
+            <p>{colorData[4].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="analogous">
             <section ref={setSecRef} className='section'>
-              <h2>Warm & Cool Color</h2>
-              <p>Warm colors are the colors from red through to yellow. These colors are said to bring to mind warmth, like the sun. 
-                <br/>
-                <br/>
-                Cool colors are the colors from blue to green and purple. These colors are said to bring to mind coolness, like water.</p>
+              <h2>{colorData[5].topic}</h2>
+              <p style={{ whiteSpace: "pre-line" }}>{colorData[5].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="shade">
             <section ref={setSecRef} className='section'>
-              <h2>Shade</h2>
-              <p>A shade is created by adding black to a base hue, darkening the color. This creates a deeper, richer color. Shades can be quite dramatic and can be overpowering.</p>
+              <h2>{colorData[6].topic}</h2>
+              <p>{colorData[6].content}</p>
             </section>
           </div> 
           <div className="color-mode-section" data-mode="tint">
             <section ref={setSecRef} className='section'>
-              <h2>Tint</h2>
-              <p>A tint is created by adding white to a base hue, lightening the color. This can make a color less intense, and is useful when balancing more vivid color combinations.</p>
+            <h2>{colorData[7].topic}</h2>
+            <p>{colorData[7].content}</p>
             </section>
           </div> 
           <div className="color-mode-section" data-mode="tones">
             <section ref={setSecRef} className='section'>
-              <h2>Tones</h2>
-              <p>A tone is created by combining black and white—or grey—with a base hue. Like tints, tones are subtler versions of the original color. Tones are less likely to look pastel, and can reveal complexities not apparent in the base color.</p>
+            <h2>{colorData[8].topic}</h2>
+            <p>{colorData[8].content}</p>
             </section>
           </div> 
         </div>
