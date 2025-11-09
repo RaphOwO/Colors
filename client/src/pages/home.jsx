@@ -34,7 +34,7 @@ function Home() {
 
     const setTopicRef = (el) => {
         if (el && !topicRefs.current.includes(el)) {
-        topicRefs.current.push(el);
+          topicRefs.current.push(el);
         }
     };   
 
@@ -59,7 +59,7 @@ function Home() {
         });
 
         return () => observer.disconnect();
-        }, []); 
+    }, []); 
 
   return (
     <div className="page">
@@ -72,20 +72,21 @@ function Home() {
           }}
         >
           <div ref={heroRef} className="title-content fade-section">
-            <label className="title-message">Welcome</label>
+            <label className="title-message">Designs</label>
             <h1 className="home-title">COLORS</h1>
           </div>
 
           <div className="home-content">
             <section ref={setTopicRef} className="topic-section left">
               <div className="topic-text">
-                <h2>About</h2>
+                <h2>About <label style={{fontFamily: "Ananias"}}>COLORS</label></h2>
                 <p>
                   COLORS is an educational website focused on the fundamentals of graphic design.
                   It provides clear and engaging explanations about color theory and composition,
                   with interactive examples and hands-on learning.
                 </p>
               </div>
+              <p>Add something</p>
             </section>
 
             <section ref={setTopicRef} className="topic-section right">

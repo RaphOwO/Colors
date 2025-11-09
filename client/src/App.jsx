@@ -5,7 +5,8 @@ import './App.css';
 import Intro from './components/intro.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './pages/home.jsx';
-import Color from './pages/color.jsx';
+import ColorTheory from './pages/colorTheory.jsx';
+import Meaning from './pages/colorMeaning.jsx';
 import Composition from './pages/composition.jsx';
 import Login from './components/login.jsx';
 import { getCurrentUser } from "./utils/auth";
@@ -37,16 +38,15 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/color" element={<Color />} />
+        <Route path="/color/theory" element={<ColorTheory />} />
+        <Route path="/color/meaning" element={<Meaning/>}/>
         <Route path="/composition" element={<Composition />} />
       </Routes>
 
-      {/* Intro overlay */}
       <AnimatePresence>
         {showIntro && <Intro onDone={() => setShowIntro(false)} />}
       </AnimatePresence>
 
-      {/* Login popup */}
       <AnimatePresence>
         {showLogin && (
           <Login onClose={() => setShowLogin(false)} setUser={setUser} />
