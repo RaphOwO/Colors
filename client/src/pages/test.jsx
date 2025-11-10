@@ -107,6 +107,7 @@ function TestPage({ user }) {
           </>
         ) : (
           <div className="result-box">
+            <img className="color-img" src="https://www.pngmart.com/files/23/Color-Wheel-PNG-Photos.png" alt= "Good image"></img>
             <h2>Test Completed!</h2>
             <p>
               You scored {score} out of {testData.length}.

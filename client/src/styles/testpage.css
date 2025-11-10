@@ -112,13 +112,17 @@
 
 .result-box {
     text-align: center;
-    margin-top: 1rem;
-    padding: 1rem;
+    padding: 7rem;
     border-radius: 12px;
     background: #ffffff;
     max-height: 200px;
-    overflow-y: auto;
-    font-size: 0.95rem;
-    color: #333;
+    font-size: 1rem;
+    color: #8532ae;
 }
 
+.color-img {
+    width: 200px;
+    height: 200px;
+    margin-right: 8px;
+    margin-top: -65px; 
+}

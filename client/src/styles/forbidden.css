@@ -1,7 +1,7 @@
 .forbidden-container {
     width: 100%;
     min-height: 100vh;
-    background: rgba(87, 87, 87, 0.9);
+    background: linear-gradient(270deg, #f3292f, #df4444, #cc2020, #fbc2eb);
     background-size: 400% 400%;
     animation: redPulse 6s ease-in-out infinite alternate;
     display: flex;
