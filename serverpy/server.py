@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 import bcrypt
@@ -6,7 +6,6 @@ import jwt
 import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from typing import Optional
 
 load_dotenv()
 JWT_SECRET = os.getenv("JWT_SECRET", "default_secret")
@@ -40,11 +39,13 @@ with get_db() as db:
 def create_token(username: str):
     payload = {
         "username": username,
-        "exp": datetime.utcnow() + timedelta(hours=1)
+        # ✅ token lasts 7 days for dev convenience
+        "exp": datetime.utcnow() + timedelta(days=7)
     }
     return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
 
-def verify_token(auth_header: Optional[str] = Header(None)):
+def verify_token(request: Request):
+    auth_header = request.headers.get("authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Access denied, no token provided")
 
@@ -60,6 +61,7 @@ def verify_token(auth_header: Optional[str] = Header(None)):
 @app.get("/")
 def home():
     return {"message": "Hello from FastAPI backend!"}
+
 
 @app.post("/register")
 def register(data: dict):
@@ -89,10 +91,11 @@ def register(data: dict):
             (username, email, hashed)
         )
         db.commit()
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Failed to create account")
 
     return {"message": "Account created successfully"}
+
 
 @app.post("/login")
 def login(data: dict):
@@ -120,11 +123,13 @@ def login(data: dict):
         }
     }
 
+
 @app.get("/register/users")
 def get_all_users():
     db = get_db()
     users = db.execute("SELECT id, username, email FROM users").fetchall()
     return [dict(u) for u in users]
+
 
 @app.get("/user")
 def get_user(user=Depends(verify_token)):
