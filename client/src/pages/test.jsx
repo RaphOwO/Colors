@@ -85,7 +85,7 @@ function TestPage({ user }) {
             </div>
 
             {submitted ? (
-              <div className="result-box">
+              <div className="explain-box">
                 <p>{selected === question.answer ? "Correct!" : "Wrong!"}</p>
                 <p>{question.explanation}</p>
                 <button

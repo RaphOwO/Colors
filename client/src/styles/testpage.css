@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 18vh;
+    padding-top: 16vh;
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
@@ -92,7 +92,7 @@
     display: block;
     margin: 1rem auto 0;
     padding: 0.8rem 1.5rem;
-    background: #6c63ff;
+    background: #6b67c3;
     color: white;
     border: none;
     border-radius: 10px;
@@ -125,4 +125,13 @@
     height: 200px;
     margin-right: 8px;
     margin-top: -65px; 
+}
+
+.explain-box {
+    margin-top: 1rem;
+    text-align: center;
+    background: #fcfbfb;
+    padding: 1rem;
+    border-radius: 10px;
+    color: #7050b7;
 }
