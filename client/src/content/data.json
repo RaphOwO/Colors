@@ -1,68 +1,30 @@
 [
-    {
-        "topic": "Color Theory and the Color Wheel",
-        "content": {
-        "description": "Ever wondered how designers and artists find the perfect color combination?\nThey use color theory. Color theory is a practical combination of art and science that’s used to determine what colors look good together. The color wheel was invented in 1666 by Isaac Newton, who mapped the color spectrum onto a circle. The color wheel is the basis of color theory, because it shows the relationship between colors.\nColors that look good together are called a color harmony. Artists and designers use these to create a particular look or feel. You can use a color wheel to find color harmonies by using the rules of color combinations. Color combinations determine the relative positions of different colors in order to find colors that create a pleasing effect.\nThere are two types of color wheel. The RYB or red, yellow, blue color wheel is typically used by artists, as it helps with combining paint colors. Then there is the RGB, or red, green and blue color wheel, which is designed for online use, as it refers to mixing light – like on a computer or TV screen. Canva’s color wheel is an RGB color wheel, as it is designed for online use."
-        }
-    },
-    {
-        "topic": "Color Combinations",
-        "content": {
-            "description": "There are several main types of color combinations used in design and art. Each combination creates a different visual effect and mood.",
-            "types": {
-            "Complementary": {
-                "description": "Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination – together, these colors will appear brighter and more prominent.",
-                "img": "complementary.WEBP"
-            },
-            "Monochromatic": {
-                "description": "Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look.",
-                "img": "monochromatic.WEBP"
-            },
-            "Analogous": {
-                "description": "Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents.",
-                "img": "analogous.WEBP"
-            },
-            "Triadic": {
-                "description": "Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination — making it more versatile. This combination creates bold, vibrant color palettes.",
-                "img": "triadic.WEBP"
-            },
-            "Tetradic": {
-                "description": "Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance,",
-                "img": "tetradic.WEBP"
-            }
-            }
-        }
-    },
-    {
-      "topic": "Primary, Secondary, and Tertiary Colors",
-      "content": {
-        "description": "There are 12 main colors on the color wheel. In the RGB color wheel, these hues are red, orange, yellow, chartreuse green, green, spring green, cyan, azure, blue, violet, magenta and rose.\nThe color wheel can be divided into primary, secondary and tertiary colors.\nPrimary colors in the RGB color wheel are the colors that, added together, create pure white light. These colors are red, green and blue.\nIn the RYB color wheel, primary colors are colors that can’t be mixed from other colors. There are three primary colors: red, yellow, and blue.\nSecondary colors are colors that result from mixing two primary colors. There are three secondary colors. In the RGB color wheel, these are cyan, magenta and yellow. When you mix light, red and green make yellow, green and blue make cyan, and blue and red make magenta.\nIn the RYB color wheel, the secondary colors are purple (red mixed with blue), orange (red mixed with yellow), and green (yellow mixed with blue).\nTertiary colors are colors made by combining a secondary color with a primary color. There are six tertiary colors. In the RGB color wheel these are orange, chartreuse green, spring green, azure, violet and rose.\nIn the RYB color wheel, the tertiary colors are red-orange, yellow-orange, yellow-green, blue-green, blue-violet, and red-violet."
-      },
-      "img": "pstcolors.WEBP"
-    },
-    {
-      "topic": "Warm and Cool Colors",
-      "content": {
-        "description": "The color wheel can also be divided into warm and cool colors. The warmth or coolness of a color is also known as its color temperature. The color combinations found on a color wheel often have a balance of warm and cool colors. According to color psychology, different color temperatures evoke different feelings. For example, warm colors are said to bring to mind coziness and energy, while cool colors are associated with serenity and isolation.\nWarm colors are the colors from red through to yellow. These colors are said to bring to mind warmth, like the sun.\nCool colors are the colors from blue to green and purple. These colors are said to bring to mind coolness, like water."
-      },
-      "img": "warmcool.WEBP"
-    },
-    {
-      "topic": "Shades, Tints, and Tones",
-      "content": {
-        "description": "You can create shades, tints and tones of a color by adding black, grey and white to a base hue.",
-        "Shade": "A shade is created by adding black to a base hue, darkening the color. This creates a deeper, richer color. Shades can be quite dramatic and can be overpowering.",
-        "Tint": "A tint is created by adding white to a base hue, lightening the color. This can make a color less intense, and is useful when balancing more vivid color combinations.",
-        "Tones": "A tone is created by combining black and white—or grey—with a base hue. Like tints, tones are subtler versions of the original color. Tones are less likely to look pastel, and can reveal complexities not apparent in the base color."
-      },
-      "img": "shade.WEBP"
-    },
-    {
-      "topic": "Hue, Saturation, and Luminance",
-      "content": {
-        "description": "A hue is basically any color on the color wheel. When you are using a color wheel or a color picker, you can adjust the saturation and luminance of a hue.\nSaturation is the intensity or purity of the color.\nLuminance is the amount of brightness or light in a color."
-      },
-      "img": "hue.WEBP"
-    }
-  ]
-  
+  { "topic": "Monochromatic",
+    "content": "Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look."
+  },
+  { "topic": "Complementary",
+    "content": "Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination together, these colors will appear brighter and more prominent."
+  },
+  { "topic": "Analogous",
+    "content": "Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents."
+  },
+  { "topic": "Triadic",
+    "content": "Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination making it more versatile. This combination creates bold, vibrant color palettes."
+  },
+  { "topic": "Tetradic",
+    "content": "Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance."
+  },
+  { "topic": "Warm and Cool Colors",
+    "content": "The warmth or coolness of a color is also known as its color temperature. The color combinations found on a color wheel often have a balance of warm and cool colors. According to color psychology, different color temperatures evoke different feelings.\n\nWarm colors are the colors from red through to yellow. These colors are said to bring to mind warmth, like the sun.\n\nCool colors are the colors from blue to green and purple. These colors are said to bring to mind coolness, like water."
+  },
+  { "topic": "Shade",
+    "content": "A shade is created by adding black to a base hue, darkening the color. This creates a deeper, richer color. Shades can be quite dramatic and can be overpowering."
+  },
+  { "topic": "Tint",
+    "content": "A tint is created by adding white to a base hue, lightening the color. This can make a color less intense, and is useful when balancing more vivid color combinations."
+  },
+  { "topic": "Tones",
+    "content": "A tone is created by combining black and white—or grey—with a base hue. Like tints, tones are subtler versions of the original color. Tones are less likely to look pastel, and can reveal complexities not apparent in the base color."
+  }
+
+]
