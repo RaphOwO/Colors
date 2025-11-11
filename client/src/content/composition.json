@@ -1,0 +1,41 @@
+[
+  {
+    "topic": "What is Composition in Art?",
+    "content": "Composition in art is the way in which different elements of an artwork are combined. In general, this refers to the key subjects of the artwork and how they are arranged in relation to each other."
+  },
+
+  {
+    "topic": "Balance",
+    "content": "Balance is the sense that the painting feels right and not heavier on one side. Having a symmetrical arrangement adds a sense of calm, whereas an asymmetrical arrangement creates a more dynamic feeling. A painting that is not balanced creates a sense of unease.",
+    "img": "https://www.thoughtco.com/thmb/bUU2miVzrB5Z1vCUi3y_KLcKjzs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Symmetry-Art-58c9b5fc5f9b581d72f65ab0.jpg"
+  },
+
+  {
+    "topic": "Rhythm",
+    "content": "In much the same way music does, a piece of art can have a rhythm or underlying beat that leads your eye to view the artwork at a certain pace. Look for the large underlying shapes and repeated color.",
+    "img": "https://www.thoughtco.com/thmb/ekNGJ6MyyMG9s0VQdixHfid06WQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-175494455-5accdc37fa6bcc00361d547d.jpg"
+  
+  },
+
+  {
+    "topic": "Rule of Thirds",
+    "content": "The rule of thirds is a compositional guideline that divides an image into nine equal parts using two horizontal and two vertical lines. Important elements of the artwork are placed along these lines or at their intersections to create balance and visual interest. This technique helps draw the viewer’s attention naturally to key focal points rather than centering everything.",
+    "img": "https://res.cloudinary.com/jerrick/image/upload/c_scale,f_jpg,q_auto/rzsut0njvzywpbxyitn2.jpg"
+  },
+  {
+    "topic": "Symmetry",
+    "content": "Symmetry in art occurs when elements are arranged evenly around a central axis, creating a balanced and harmonious composition. It gives a sense of order, calmness, and stability, often seen in classical architecture and portraits.",
+    "img": "https://russell-collection.com/wp-content/uploads/2025/07/symmetrical-vs-asymmetrical-balance-in-art.jpg"
+  },
+  {
+    "topic": "Asymmetry",
+    "content": "Asymmetry in art happens when elements are not mirrored or evenly distributed, yet the composition still feels balanced. Artists use asymmetry to create movement, contrast, and visual interest, making the artwork feel more dynamic and engaging.",
+    "img": "https://depositphotos-blog.s3.eu-west-1.amazonaws.com/uploads/2024/06/michelangelos-frescoes-in-sistine-chapel.jpg"
+  },
+  {
+    "topic": "Flow",
+    "content": "Flow in art refers to the way a viewer’s eye moves through a composition. Artists create flow by using lines, shapes, colors, and repetition to guide attention smoothly from one area to another, creating a sense of movement and unity throughout the artwork.",
+    "img": "https://i.ytimg.com/vi/KA09cETo91o/maxresdefault.jpg "
+  }  
+]
+  
