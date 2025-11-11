@@ -9,6 +9,7 @@ import ColorTheory from './pages/colorTheory.jsx';
 import Meaning from './pages/colorMeaning.jsx';
 import Composition from './pages/composition.jsx';
 import Login from './components/login.jsx';
+import TestPage from './pages/test.jsx';
 import { getCurrentUser } from "./utils/auth";
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
         <Route path="/color/theory" element={<ColorTheory />} />
         <Route path="/color/meaning" element={<Meaning/>}/>
         <Route path="/composition" element={<Composition />} />
+        <Route path="/test" element={<TestPage user={user} />} />
+
       </Routes>
 
       <AnimatePresence>
