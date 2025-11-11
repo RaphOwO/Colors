@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { snackbarAlert } from "./snackbarAlert";
 import "./../styles/login.css";
 
 function Login({ onClose , setUser}) {
@@ -54,7 +55,13 @@ function Login({ onClose , setUser}) {
   
         const data = await res.json();
         localStorage.setItem("token", data.token);
-        alert("Login successful!");
+        snackbarAlert({
+          iconType: "success",
+          message: "Login Successfully!",
+          iconBg: "rgba(176, 247, 148, 1)",
+          iconColor: "white",
+          duration: 2500,
+        });
         setUser(data.user)
         onClose();
       } catch (err) {

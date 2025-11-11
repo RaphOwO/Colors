@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Section from "../components/section.jsx";
+import transition from "../components/transition.jsx";
 import "../App.css";
 import "../styles/home.css";
 
@@ -125,4 +126,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default transition(Home);

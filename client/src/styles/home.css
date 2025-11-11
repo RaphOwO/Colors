@@ -36,6 +36,7 @@
   position: absolute;
   z-index: 0;
   opacity: 0.3;
+  color: white;
   white-space: nowrap;
 }
 
@@ -49,6 +50,10 @@ h1.home-title {
   cursor: pointer;
   color: white;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.home-content {
+  color: white;
 }
 
 .topics-container {
@@ -92,7 +97,7 @@ h1.home-title {
 
 .topic-text p {
   font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.85); /* adapt for dark backgrounds */
+  color: rgba(255, 255, 255, 0.85); 
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
 }
 
