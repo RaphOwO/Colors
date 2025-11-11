@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
 import { isLoggedIn } from "../utils/checkLogin";
+import transition from "../components/transition";
 
 function Composition() {
     return (
@@ -10,4 +11,4 @@ function Composition() {
     )
 }
 
-export default Composition;
+export default transition(Composition);
