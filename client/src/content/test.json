@@ -1,0 +1,89 @@
+[
+    {
+      "question": "What is tint?",
+      "options": [
+        "A mixture of a color with white",
+        "A mixture of a color with black",
+        "A mixture of three colors",
+        "A mixture of colors that are complementary"
+      ],
+      "answer": "A mixture of a color with white",
+      "explanation": "Tint refers to a mixture of a color with white. When white is added to a color, it lightens the shade, creating a lighter version of the original color."
+    },
+    {
+      "question": "A mixture of a color with black is what?",
+      "options": ["Value", "Tint", "Saturation", "Shade"],
+      "answer": "Shade",
+      "explanation": "When a color is mixed with black, it becomes darker and less vibrant. This darkened version of the color is called a shade."
+    },
+    {
+      "question": "What does color do?",
+      "options": [
+        "Fills in empty spaces",
+        "Makes things artsy",
+        "Colors can draw attention; have an emotional and psychological impact",
+        "Takes up space"
+      ],
+      "answer": "Colors can draw attention; have an emotional and psychological impact",
+      "explanation": "Different colors can evoke emotions and moods. They can highlight elements and create visual interest in a composition."
+    },
+    {
+      "question": "Colors that are across from each other on a color wheel are called?",
+      "options": ["Analogous", "Tertiary", "Complementary", "Additive"],
+      "answer": "Complementary",
+      "explanation": "Complementary colors are pairs that create a strong contrast because they are on opposite sides of the color wheel."
+    },
+    {
+      "question": "Warm colors are usually associated with what kind of emotion?",
+      "options": ["Peace", "Passiveness", "Laziness", "Aggression"],
+      "answer": "Aggression",
+      "explanation": "Warm colors like red, orange, and yellow are associated with energy, intensity, and sometimes aggression."
+    },
+    {
+      "question": "What is color?",
+      "options": [
+        "Used in paints, dyes, and ink made by absorbing wavelengths of light",
+        "A substance used to give something a particular color",
+        "Pigmentation of the skin",
+        "The property possessed by an object of producing different sensations on the eye"
+      ],
+      "answer": "The property possessed by an object of producing different sensations on the eye",
+      "explanation": "Color is the visual sensation caused by the way an object reflects or emits light, perceived by the eye."
+    },
+    {
+      "question": "Colors are said to be contrasting if they are _____________.",
+      "options": ["Different in hue", "Different in lightness and darkness", "Different in saturation", "Similar in tone"],
+      "answer": "Different in lightness and darkness",
+      "explanation": "Contrasting colors stand out from each other due to differences in lightness and darkness."
+    },
+    {
+      "question": "Formal balance is another word for which type of balance?",
+      "options": ["Symmetrical", "Asymmetrical", "Radial", "Dynamic"],
+      "answer": "Symmetrical",
+      "explanation": "Formal balance refers to symmetry, where elements are evenly arranged to create a sense of stability."
+    },
+    {
+      "question": "Rhythm in design is:",
+      "options": [
+        "The use of contrasting colors",
+        "The repetition or alternation of elements to create movement",
+        "The brightness of colors",
+        "The use of complementary hues"
+      ],
+      "answer": "The repetition or alternation of elements to create movement",
+      "explanation": "Rhythm is created by repeating visual elements in a pattern, leading the viewer’s eye through the composition."
+    },
+    
+    {
+      "question": "Analogous colors are:",
+      "options": [
+        "Colors opposite each other on the color wheel",
+        "Colors side by side on the color wheel",
+        "Colors mixed with black or white",
+        "Three primary colors"
+      ],
+      "answer": "Colors side by side on the color wheel",
+      "explanation": "Analogous colors are next to each other on the color wheel and usually match well to create serene and comfortable designs."
+    }
+  ]
+  

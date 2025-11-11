@@ -11,6 +11,7 @@ import Composition from './pages/composition.jsx';
 import Login from './components/login.jsx';
 import Canvas from './pages/canvas.jsx';
 import CompositionTheory from './pages/compositionTheory.jsx';
+import TestPage from './pages/test.jsx';
 import { getCurrentUser } from "./utils/auth";
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/composition" element={<Composition />} />
         <Route path="/composition/canvas" element={<Canvas/>}/>
         <Route path="/composition/theory" element={<CompositionTheory/>}/>
+        <Route path="/test" element={<TestPage user={user} />} />
       </Routes>
 
       <AnimatePresence>

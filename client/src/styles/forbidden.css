@@ -1,0 +1,45 @@
+.forbidden-container {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(270deg, #f3292f, #df4444, #cc2020, #fbc2eb);
+    background-size: 400% 400%;
+    animation: redPulse 6s ease-in-out infinite alternate;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.forbidden-box {
+    width: 400px;
+    text-align: center;
+    padding: 2rem 3rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(255, 0, 0, 0.4);
+    animation: floatBox 3s ease-in-out infinite;
+}
+
+@keyframes floatBox {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+.forbidden-box h2 {
+    color: #d60000;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.forbidden-box p {
+    color: #770000;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
