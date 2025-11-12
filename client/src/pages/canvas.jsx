@@ -11,10 +11,6 @@ import {
   Image as KonvaImage,
 } from "react-konva";
 import "../styles/Canvas.css";
-import { confirmAlert } from "../components/confirm.jsx";
-import { snackbarAlert } from "../components/snackbarAlert.jsx";
-
-
 
 function useContainerSize(ref) {
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -717,49 +713,21 @@ export default function Canvas() {
 
   const saveSnapshot = () => {
     localStorage.setItem("design_backup", JSON.stringify(shapes));
-    snackbarAlert({
-      iconType: "success",
-      message: "Snapshot saved",
-      iconBg: "rgba(176, 247, 148, 1)",
-      iconColor: "white",
-      duration: 2500,
-    });
+    alert("✅ Saved snapshot!");
   };
-  const loadSnapshot = async () => {
+  const loadSnapshot = () => {
     const saved = localStorage.getItem("design_backup");
     if (saved) {
-      const ok = await confirmAlert({
-          iconType: "warning",
-          title: "Save",
-          message: "Load saved snapshot?",
-          iconBg: "#FEF3C7",  
-          iconColor: "#92400E",
-          snackScale: 1.1,
-       });
-      if (ok) {
+      if (window.confirm("Load saved snapshot")) {
         const parsed = JSON.parse(saved);
         performSetShapes(parsed);
       }
     } else {
-      snackbarAlert({
-        iconType: "fail",
-        message: "Snapshot not found",
-        iconBg: "rgb(255, 90, 90)",
-        iconColor: "white",
-        duration: 2500,
-      });
+      alert("No saved snapshot found.");
     }
   };
-  const clearDesign = async() => {
-    const ok = await confirmAlert({
-      iconType: "warning",
-      title: "CLEAR",
-      message: "Clear all shapes?",
-      iconBg: "#FEF3C7",  
-      iconColor: "#92400E",
-      snackScale: 1.1,
-    });
-    if (ok) {
+  const clearDesign = () => {
+    if (window.confirm("Clear all shapes?")) {
       performSetShapes([]);
       setSelectedIds([]);
       setContextMenu(null);
@@ -1119,6 +1087,7 @@ export default function Canvas() {
             );
           })()}
 
+          {/* In-place Textarea (Canva-like) */}
           {editor && (
             <textarea
               className="konva-textarea"

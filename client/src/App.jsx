@@ -65,14 +65,19 @@ function App() {
         onLogOutClick={handleLogout}
         user={user}
       />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/color/theory" element={<ColorTheory />} />
-        <Route path="/color/meaning" element={<Meaning/>}/>
-        <Route path="/test" element={<TestPage/>}/>
-        <Route path="/composition/canvas" element={<Canvas/>}/>
-        <Route path="/composition/theory" element={<CompositionTheory/>}/>
-      </Routes>
+
+      <ScrollToTop/>
+      <AnimatePresence mode='wait'>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Home />} />
+          <Route path="/color/theory" element={<ColorTheory />} />
+          <Route path="/color/meaning" element={<Meaning/>}/>
+          <Route path="/composition/canvas" element={<Canvas/>}/>
+          <Route path="/composition/theory" element={<CompositionTheory/>}/>
+          <Route path="/test" element={<TestPage user={user} />} />
+        </Routes>
+      </AnimatePresence>
+
 
       <AnimatePresence>
         {showIntro && <Intro onDone={() => setShowIntro(false)} />}
