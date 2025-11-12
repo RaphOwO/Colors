@@ -32,7 +32,6 @@ function Dropdown({ title, links, name, isSidebar,isCompositionPage }) {
         className={`dropdown-menu ${isSidebar ? "sidebar" : ""} ${
           open ? "show" : ""
         }`}
-        style={{color: isCompositionPage ? "black" : "white"}}
       >
         {links.map(({ to, label }) => (
           <li key={to}>
@@ -70,7 +69,7 @@ function Sidebar({ className, user, onLoginClick, onLogOutClick,isCompositionPag
         title="Composition"
         name="composition"
         links={[
-          { to: "/composition/theory", label: "Info" },
+          { to: "/composition/principles", label: "Principles" },
           { to: "/composition/canvas", label: "Canvas" },
         ]}
         isSidebar={className === "sidebar"}
@@ -103,13 +102,8 @@ function Navbar({ onLoginClick, user, onLogOutClick }) {
 
   return (
     <>
-      <nav
-        style={{
-          backgroundColor: isCompositionPage ? "white" : "transparent",
-          color: isCompositionPage ? "#1a1a1a" : "white"
-        }}
-      >
-        <Link to="/" className="home" style={{color: isCompositionPage ? "#1a1a1a" : "white"}}>COLORS</Link>
+      <nav  >
+        <Link to="/" className="home">COLORS</Link>
         <input type="checkbox" id="sidebar-active" />
         <label id="overlay" htmlFor="sidebar-active"></label>
 

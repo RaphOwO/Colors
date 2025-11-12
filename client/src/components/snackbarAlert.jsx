@@ -16,7 +16,6 @@ export function snackbarAlert({
 
     let appliedClass = iconBgClass;
 
-    // If no class is provided, dynamically create one from the color
     if (!appliedClass) {
         appliedClass = `snack-bg-${Math.random().toString(36).substr(2, 8)}`;
         const style = document.createElement("style");
@@ -28,7 +27,6 @@ export function snackbarAlert({
         `;
         document.head.appendChild(style);
 
-        // Clean up the style later
         setTimeout(() => style.remove(), duration + 500);
     }
 
@@ -55,13 +53,11 @@ export function snackbarAlert({
         />
     );
 
-    // Animate slide-down
     requestAnimationFrame(() => {
         container.style.top = "40px";
         container.style.opacity = "1";
     });
 
-    // Remove after duration
     setTimeout(() => {
         container.style.top = "-100px";
         container.style.opacity = "0";

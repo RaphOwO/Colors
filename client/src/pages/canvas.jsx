@@ -8,6 +8,8 @@ import {
   Line,
   Transformer,
 } from "react-konva";
+import transition from "../components/transition";
+import Section from "../components/section";
 import "../styles/Canvas.css";
 
 function useContainerSize(ref) {
@@ -147,7 +149,7 @@ const Shape = ({
 };
 
 /* ---------- Main Canvas ---------- */
-export default function Canvas() {
+function Canvas() {
   const [shapes, _setShapes] = useState([]);
   const setShapes = (updater) => _setShapes(updater);
 
@@ -415,170 +417,174 @@ export default function Canvas() {
   const cancelTextEdit = () => setEditor(null);
 
   return (
-    <div className="canvas-layout" onContextMenu={(e) => e.preventDefault()}>
-      <aside className={`left-panel ${sidebarOpen ? "open" : ""}`}>
-        <button className="toggle-btn" onClick={() => setSidebarOpen((p) => !p)}>
-          {sidebarOpen ? "◀" : "▶"}
-        </button>
+    <Section color="black">
+      <div className="canvas-layout" onContextMenu={(e) => e.preventDefault()}>
+        <aside className={`left-panel ${sidebarOpen ? "open" : ""}`}>
+          <button className="toggle-btn" onClick={() => setSidebarOpen((p) => !p)}>
+            {sidebarOpen ? "◀" : "▶"}
+          </button>
 
-        <div className="sidebar-content">
-          <button onClick={saveSnapshot}>Save</button>
-          <button onClick={loadSnapshot}>Load</button>
-          <button onClick={clearDesign}>Clear</button>
-        </div>
-      </aside>
-
-      {/* Canvas */}
-      <main className="canvas-main">
-        <div className="canvas-surface" ref={surfaceRef}>
-          <Stage
-            ref={stageRef}
-            width={surfaceW}
-            height={surfaceH}
-            onMouseDown={deselectStage}
-            onTouchStart={deselectStage}
-          >
-            <Layer>
-              {shapes.map((shape) => (
-                <Shape
-                  key={shape.id}
-                  shape={shape}
-                  isSelected={shape.id === selectedId}
-                  isEditingText={editor?.id === shape.id}
-                  onSelect={() => {
-                    setSelectedId(shape.id);
-                    setContextMenu(null);
-                  }}
-                  onChange={(newAttrs) => updateShape(shape.id, newAttrs)}
-                  onRightClick={handleRightClick}
-                  onStartTextEdit={onStartTextEdit}
-                />
-              ))}
-            </Layer>
-          </Stage>
-
-          {/* Toolbar */}
-          <div className="bottom-toolbar">
-            {/* Undo / Redo */}
-            <button onClick={undo} title="Undo (Ctrl/Cmd+Z)" aria-label="Undo">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M9 7l-5 5 5 5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M20 12h-13" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button onClick={redo} title="Redo (Ctrl/Cmd+Shift+Z or Y)" aria-label="Redo">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M15 7l5 5-5 5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M4 12h13" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-
-            <div className="sep" />
-
-            <button onClick={() => addShape("rect")} title="Rectangle" aria-label="Rectangle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M4 4H20V20H4V4Z"/></svg>
-            </button>
-            <button onClick={() => addShape("circle")} title="Ellipse" aria-label="Ellipse">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/></svg>
-            </button>
-            <button onClick={() => addShape("triangle")} title="Triangle" aria-label="Triangle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2L2 22h20L12 2z"/></svg>
-            </button>
-            <button onClick={() => addShape("text")} title="Text" aria-label="Text">
-              {/* Thin text icon */}
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M17 6H7M12 6v12" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+          <div className="sidebar-content">
+            <button onClick={saveSnapshot}>Save</button>
+            <button onClick={loadSnapshot}>Load</button>
+            <button onClick={clearDesign}>Clear</button>
           </div>
+        </aside>
 
-          {/* Context Menu */}
-          {contextMenu && (() => {
-            const s = shapes.find((x) => x.id === contextMenu.id);
-            if (!s) return null;
-            const isText = s.type === "text";
-            return (
-              <div
-                className="context-menu"
-                style={{ top: Math.max(8, contextMenu.y + 8), left: Math.max(8, contextMenu.x + 8) }}
-              >
-                <div className="row">
-                  <label>Fill <input type="color" value={s.fill || "#111"}
-                    onChange={(e) => updateShape(s.id, { ...s, fill: e.target.value })} /></label>
-                  <label>Stroke <input type="color" value={s.stroke || "#000"}
-                    onChange={(e) => updateShape(s.id, { ...s, stroke: e.target.value })} /></label>
-                </div>
+        {/* Canvas */}
+        <main className="canvas-main">
+          <div className="canvas-surface" ref={surfaceRef}>
+            <Stage
+              ref={stageRef}
+              width={surfaceW}
+              height={surfaceH}
+              onMouseDown={deselectStage}
+              onTouchStart={deselectStage}
+            >
+              <Layer>
+                {shapes.map((shape) => (
+                  <Shape
+                    key={shape.id}
+                    shape={shape}
+                    isSelected={shape.id === selectedId}
+                    isEditingText={editor?.id === shape.id}
+                    onSelect={() => {
+                      setSelectedId(shape.id);
+                      setContextMenu(null);
+                    }}
+                    onChange={(newAttrs) => updateShape(shape.id, newAttrs)}
+                    onRightClick={handleRightClick}
+                    onStartTextEdit={onStartTextEdit}
+                  />
+                ))}
+              </Layer>
+            </Stage>
 
-                <div className="row">
-                  <label>Stroke W
-                    <input type="range" min="0" max="12" step="1" value={s.strokeWidth ?? 1}
-                      onChange={(e) => updateShape(s.id, { ...s, strokeWidth: +e.target.value })} />
-                  </label>
-                  <label>Opacity
-                    <input type="range" min="0.1" max="1" step="0.05" value={s.opacity ?? 1}
-                      onChange={(e) => updateShape(s.id, { ...s, opacity: +e.target.value })} />
-                  </label>
-                </div>
+            {/* Toolbar */}
+            <div className="bottom-toolbar">
+              {/* Undo / Redo */}
+              <button onClick={undo} title="Undo (Ctrl/Cmd+Z)" aria-label="Undo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+                  <path d="M9 7l-5 5 5 5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M20 12h-13" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button onClick={redo} title="Redo (Ctrl/Cmd+Shift+Z or Y)" aria-label="Redo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+                  <path d="M15 7l5 5-5 5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M4 12h13" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
 
-                {isText && (
+              <div className="sep" />
+
+              <button onClick={() => addShape("rect")} title="Rectangle" aria-label="Rectangle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M4 4H20V20H4V4Z"/></svg>
+              </button>
+              <button onClick={() => addShape("circle")} title="Ellipse" aria-label="Ellipse">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/></svg>
+              </button>
+              <button onClick={() => addShape("triangle")} title="Triangle" aria-label="Triangle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2L2 22h20L12 2z"/></svg>
+              </button>
+              <button onClick={() => addShape("text")} title="Text" aria-label="Text">
+                {/* Thin text icon */}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M17 6H7M12 6v12" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Context Menu */}
+            {contextMenu && (() => {
+              const s = shapes.find((x) => x.id === contextMenu.id);
+              if (!s) return null;
+              const isText = s.type === "text";
+              return (
+                <div
+                  className="context-menu"
+                  style={{ top: Math.max(8, contextMenu.y + 8), left: Math.max(8, contextMenu.x + 8) }}
+                >
                   <div className="row">
-                    <label>Font
-                      <input type="range" min="10" max="96" step="1" value={s.fontSize ?? 22}
-                        onChange={(e) => updateShape(s.id, { ...s, fontSize: +e.target.value })} />
+                    <label>Fill <input type="color" value={s.fill || "#111"}
+                      onChange={(e) => updateShape(s.id, { ...s, fill: e.target.value })} /></label>
+                    <label>Stroke <input type="color" value={s.stroke || "#000"}
+                      onChange={(e) => updateShape(s.id, { ...s, stroke: e.target.value })} /></label>
+                  </div>
+
+                  <div className="row">
+                    <label>Stroke W
+                      <input type="range" min="0" max="12" step="1" value={s.strokeWidth ?? 1}
+                        onChange={(e) => updateShape(s.id, { ...s, strokeWidth: +e.target.value })} />
                     </label>
-                    <button
-                      className="ghost-btn"
-                      onClick={() => onStartTextEdit(s, stageRef.current.findOne(`#${s.id}`))}
-                    >
-                      Edit text
+                    <label>Opacity
+                      <input type="range" min="0.1" max="1" step="0.05" value={s.opacity ?? 1}
+                        onChange={(e) => updateShape(s.id, { ...s, opacity: +e.target.value })} />
+                    </label>
+                  </div>
+
+                  {isText && (
+                    <div className="row">
+                      <label>Font
+                        <input type="range" min="10" max="96" step="1" value={s.fontSize ?? 22}
+                          onChange={(e) => updateShape(s.id, { ...s, fontSize: +e.target.value })} />
+                      </label>
+                      <button
+                        className="ghost-btn"
+                        onClick={() => onStartTextEdit(s, stageRef.current.findOne(`#${s.id}`))}
+                      >
+                        Edit text
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="full">
+                    <button className="ghost-btn" onClick={() => duplicateShape(s.id)}>Duplicate</button>
+                    <button className="ghost-btn" onClick={() => bringToFront(s.id)}>Bring front</button>
+                    <button className="ghost-btn" onClick={() => sendToBack(s.id)}>Send back</button>
+                  </div>
+
+                  <div className="full">
+                    <button className="ghost-btn" onClick={() => toggleLock(s.id)}>
+                      {s.locked ? "Unlock" : "Lock"}
+                    </button>
+                    <button className="ghost-btn" style={{ color: "#b00020", borderColor: "rgba(176,0,32,0.2)" }}
+                            onClick={() => deleteShape(s.id)}>
+                      Delete
                     </button>
                   </div>
-                )}
-
-                <div className="full">
-                  <button className="ghost-btn" onClick={() => duplicateShape(s.id)}>Duplicate</button>
-                  <button className="ghost-btn" onClick={() => bringToFront(s.id)}>Bring front</button>
-                  <button className="ghost-btn" onClick={() => sendToBack(s.id)}>Send back</button>
                 </div>
+              );
+            })()}
 
-                <div className="full">
-                  <button className="ghost-btn" onClick={() => toggleLock(s.id)}>
-                    {s.locked ? "Unlock" : "Lock"}
-                  </button>
-                  <button className="ghost-btn" style={{ color: "#b00020", borderColor: "rgba(176,0,32,0.2)" }}
-                          onClick={() => deleteShape(s.id)}>
-                    Delete
-                  </button>
-                </div>
-              </div>
-            );
-          })()}
-
-          {editor && (
-            <textarea
-              className="konva-textarea"
-              style={{
-                left: editor.x,
-                top: editor.y,
-                width: editor.width,
-                fontSize: editor.fontSize,
-                color: editor.color,
-                minHeight: 28,
-              }}
-              autoFocus
-              value={editor.value}
-              onChange={(e) => setEditor((v) => ({ ...v, value: e.target.value }))}
-              onBlur={commitTextEdit}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  e.preventDefault();
-                  cancelTextEdit();
-                }
-              }}
-            />
-          )}
-        </div>
-      </main>
-    </div>
+            {editor && (
+              <textarea
+                className="konva-textarea"
+                style={{
+                  left: editor.x,
+                  top: editor.y,
+                  width: editor.width,
+                  fontSize: editor.fontSize,
+                  color: editor.color,
+                  minHeight: 28,
+                }}
+                autoFocus
+                value={editor.value}
+                onChange={(e) => setEditor((v) => ({ ...v, value: e.target.value }))}
+                onBlur={commitTextEdit}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    e.preventDefault();
+                    cancelTextEdit();
+                  }
+                }}
+              />
+            )}
+          </div>
+        </main>
+      </div>
+    </Section>
   );
 }
+
+export default transition(Canvas);
