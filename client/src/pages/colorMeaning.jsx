@@ -69,7 +69,7 @@ function Meaning() {
         if (choice === "Restaurant1") {
         setAnswer("Of course, it'd be that one!");
         setCorrect(true);
-        setLockScroll(false);
+        setLockScrollPos(false);
         } else {
         setAnswer("Please take this seriously");
         }

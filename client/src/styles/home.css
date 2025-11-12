@@ -16,6 +16,10 @@
   }
 }
 
+.topic-section img {
+  width: 50vw;
+}
+
 .title-content {
   height: 100vh;
   width: 100%;
@@ -127,14 +131,18 @@ h1.home-title {
     flex-direction: column;
   }
 
+  .topic-section.right {
+    flex-direction: column;
+  }
+
   .topic-text,
   .topic-side {
     flex: 1 1 100%;
     max-width: 100%;
-    text-align: center; /* ensures text inside .topic-text centers */
+    text-align: center;      
     display: flex;
     flex-direction: column;
-    align-items: center; /* centers inline elements like h2/p */
+    align-items: center;
     justify-content: center;
   }
 

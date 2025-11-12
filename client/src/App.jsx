@@ -73,7 +73,7 @@ function App() {
           <Route path="/color/theory" element={<ColorTheory />} />
           <Route path="/color/meaning" element={<Meaning/>}/>
           <Route path="/composition/canvas" element={<Canvas/>}/>
-          <Route path="/composition/theory" element={<CompositionTheory/>}/>
+          <Route path="/composition/principles" element={<CompositionTheory/>}/>
           <Route path="/test" element={<TestPage user={user} />} />
         </Routes>
       </AnimatePresence>
