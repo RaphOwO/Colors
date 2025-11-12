@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import Konva from "konva";
 import {
   Stage,
   Layer,
@@ -7,6 +8,7 @@ import {
   Text,
   Line,
   Transformer,
+  Image as KonvaImage,
 } from "react-konva";
 import "../styles/Canvas.css";
 
@@ -27,7 +29,49 @@ function useContainerSize(ref) {
 const deepClone = (x) => JSON.parse(JSON.stringify(x));
 const HISTORY_LIMIT = 100;
 
-/* ---------- Shape ---------- */
+const IconLock = ({ locked = false, size = 20 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+  >
+    {locked ? (
+      <>
+        <path d="M7 9V7a5 5 0 1 1 10 0v2" />
+        <rect x="5" y="9" width="14" height="12" rx="2" />
+        <path d="M12 14v4" />
+      </>
+    ) : (
+      <>
+        <path d="M7 9V7a5 5 0 0 1 9.5-2" />
+        <rect x="5" y="9" width="14" height="12" rx="2" />
+        <path d="M12 14v4" />
+      </>
+    )}
+  </svg>
+);
+
+function useHTMLImage(src) {
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    if (!src) return;
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => setImage(img);
+    img.onerror = () => setImage(null);
+    img.src = src;
+    return () => setImage(null);
+  }, [src]);
+  return image;
+}
+
 const Shape = ({
   shape,
   isSelected,
@@ -36,16 +80,14 @@ const Shape = ({
   onChange,
   onRightClick,
   onStartTextEdit,
+  registerRef,
 }) => {
   const shapeRef = useRef();
-  const trRef = useRef();
 
   useEffect(() => {
-    if (isSelected && !shape.locked && trRef.current && shapeRef.current) {
-      trRef.current.nodes([shapeRef.current]);
-      trRef.current.getLayer().batchDraw();
-    }
-  }, [isSelected, shape.locked]);
+    if (shapeRef.current) registerRef(shape.id, shapeRef.current);
+    return () => registerRef(shape.id, null);
+  }, [shape.id]);
 
   const handleRightClick = (e) => {
     e.evt.preventDefault();
@@ -54,12 +96,13 @@ const Shape = ({
   };
 
   const handlePointerDown = (e) => {
-    if (e.evt.button === 0) onSelect();
+    if (e.evt.button === 0) onSelect(e);
   };
 
   const commonProps = {
     id: shape.id,
-    draggable: !shape.locked,
+    name: "selectable",
+    draggable: !shape.locked && !isEditingText,
     listening: true,
     onMouseDown: handlePointerDown,
     onTap: onSelect,
@@ -77,88 +120,129 @@ const Shape = ({
         ...shape,
         x: node.x(),
         y: node.y(),
-        width: Math.max(5, shape.width * scaleX),
-        height: Math.max(5, shape.height * scaleY),
+        width: Math.max(5, (shape.width ?? node.width()) * scaleX),
+        height: Math.max(5, (shape.height ?? node.height()) * scaleY),
+        rotation: typeof node.rotation === "function" ? node.rotation() : (shape.rotation ?? 0),
       });
     },
     opacity: shape.opacity ?? 1,
   };
 
-  return (
-    <>
-      {shape.type === "rect" && (
-        <Rect ref={shapeRef} {...shape} {...commonProps} width={shape.width} height={shape.height} />
-      )}
+  if (shape.type === "rect") {
+    return (
+      <Rect
+        ref={shapeRef}
+        {...shape}
+        {...commonProps}
+        width={shape.width}
+        height={shape.height}
+      />
+    );
+  }
 
-      {shape.type === "circle" && (
-        <Ellipse
-          ref={shapeRef}
-          {...shape}
-          {...commonProps}
-          radiusX={shape.width / 2}
-          radiusY={shape.height / 2}
-        />
-      )}
+  if (shape.type === "circle") {
+    return (
+      <Ellipse
+        ref={shapeRef}
+        {...shape}
+        {...commonProps}
+        radiusX={(shape.width || 0) / 2}
+        radiusY={(shape.height || 0) / 2}
+      />
+    );
+  }
 
-      {shape.type === "triangle" && (
-        <Line
-          ref={shapeRef}
-          x={shape.x}
-          y={shape.y}
-          points={[shape.width / 2, 0, 0, shape.height, shape.width, shape.height]}
-          closed
-          fill={shape.fill}
-          stroke={shape.stroke}
-          strokeWidth={shape.strokeWidth}
-          {...commonProps}
-        />
-      )}
+  if (shape.type === "triangle") {
+    return (
+      <Line
+        ref={shapeRef}
+        {...commonProps}
+        x={shape.x}
+        y={shape.y}
+        points={[shape.width / 2, 0, 0, shape.height, shape.width, shape.height]}
+        closed
+        fill={shape.fill}
+        stroke={shape.stroke}
+        strokeWidth={shape.strokeWidth}
+      />
+    );
+  }
 
-      {shape.type === "text" && (
-        <Text
-          ref={shapeRef}
-          {...shape}
-          {...commonProps}
-          text={shape.text}
-          fontSize={shape.fontSize}
-          fill={shape.fill}
-          letterSpacing={shape.letterSpacing ?? 0}
-          lineHeight={shape.lineHeight ?? 1}
-          align={shape.align ?? "left"}
-          padding={shape.padding ?? 0}
-          fontFamily={shape.fontFamily ?? 'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'}
-          fontStyle={shape.fontStyle ?? "normal"}
-          draggable={!shape.locked && !isEditingText}
-          listening={!isEditingText}
-          opacity={isEditingText ? 0.2 : (shape.opacity ?? 1)}
-          onDblClick={(e) => onStartTextEdit(shape, e.target)}
-          onDblTap={(e) => onStartTextEdit(shape, e.target)}
-        />
-      )}
+  if (shape.type === "line") {
+    return (
+      <Line
+        ref={shapeRef}
+        {...commonProps}
+        x={shape.x}
+        y={shape.y}
+        points={[0, 0, shape.width, shape.height]}
+        stroke={shape.stroke || "#111"}
+        strokeWidth={shape.strokeWidth ?? 3}
+        lineCap="round"
+        lineJoin="round"
+        draggable={!shape.locked}
+      />
+    );
+  }
 
-      {isSelected && !shape.locked && !isEditingText && (
-        <Transformer ref={trRef} rotateEnabled={true} />
-      )}
-    </>
-  );
+  if (shape.type === "image") {
+    const image = useHTMLImage(shape.src);
+    return (
+      <KonvaImage
+        ref={shapeRef}
+        {...commonProps}
+        image={image}
+        width={shape.width ?? (image?.width || 200)}
+        height={shape.height ?? (image?.height || 150)}
+      />
+    );
+  }
+
+  if (shape.type === "text") {
+    return (
+      <Text
+        ref={shapeRef}
+        {...shape}
+        {...commonProps}
+        text={shape.text}
+        fontSize={shape.fontSize}
+        fill={shape.fill}
+        letterSpacing={shape.letterSpacing ?? 0}
+        lineHeight={shape.lineHeight ?? 1}
+        align={shape.align ?? "left"}
+        padding={shape.padding ?? 0}
+        fontFamily={
+          shape.fontFamily ??
+          'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'
+        }
+        fontStyle={shape.fontStyle ?? "normal"}
+        draggable={!shape.locked && !isEditingText}
+        listening={!isEditingText}
+        opacity={isEditingText ? 0.2 : shape.opacity ?? 1}
+        onDblClick={(e) => onStartTextEdit(shape, e.target)}
+        onDblTap={(e) => onStartTextEdit(shape, e.target)}
+      />
+    );
+  }
+
+  return null;
 };
 
 /* ---------- Main Canvas ---------- */
 export default function Canvas() {
   const [shapes, _setShapes] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]); 
   const [contextMenu, setContextMenu] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Inline text editor state
-  // id, x, y, width, height, rotation, padding, lineHeight, letterSpacing, value, fontSize, color, align, fontFamily, fontWeight, fontStyle, offsetX, offsetY
   const [editor, setEditor] = useState(null);
-
   const surfaceRef = useRef(null);
   const stageRef = useRef(null);
+  const trRef = useRef(null); 
+  const nodeRefs = useRef({}); 
   const { width: surfaceW, height: surfaceH } = useContainerSize(surfaceRef);
-
-  /* ---- HISTORY: undo/redo stacks ---- */
+  const dragProxyPosRef = useRef(null);
+  const [selRect, setSelRect] = useState(null);
+  const selState = useRef({ active: false, origin: { x: 0, y: 0 } });
   const undoStackRef = useRef([]);
   const redoStackRef = useRef([]);
   const isApplyingHistory = useRef(false);
@@ -180,9 +264,7 @@ export default function Canvas() {
   const performSetShapes = (producer) => {
     _setShapes((prev) => {
       const next = typeof producer === "function" ? producer(prev) : producer;
-      if (!isApplyingHistory.current && next !== prev) {
-        pushUndo(prev);
-      }
+      if (!isApplyingHistory.current && next !== prev) pushUndo(prev);
       return next;
     });
   };
@@ -196,7 +278,7 @@ export default function Canvas() {
       redoStackRef.current.push(deepClone(prev));
       return prevSnap;
     });
-    setTimeout(() => { isApplyingHistory.current = false; }, 0);
+    setTimeout(() => (isApplyingHistory.current = false), 0);
   };
 
   const redo = () => {
@@ -208,35 +290,9 @@ export default function Canvas() {
       undoStackRef.current.push(deepClone(prev));
       return nextSnap;
     });
-    setTimeout(() => { isApplyingHistory.current = false; }, 0);
+    setTimeout(() => (isApplyingHistory.current = false), 0);
   };
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const onKey = (e) => {
-      const inText =
-        e.target &&
-        (e.target.tagName === "TEXTAREA" ||
-          e.target.tagName === "INPUT" ||
-          e.target.isContentEditable);
-      if (inText) return;
-      const meta = e.metaKey || e.ctrlKey;
-      if (!meta) return;
-      const key = e.key.toLowerCase();
-      if (key === "z") {
-        e.preventDefault();
-        if (e.shiftKey) redo();
-        else undo();
-      } else if (key === "y") {
-        e.preventDefault();
-        redo();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  /* ---- AUTOSAVE ---- */
   useEffect(() => {
     const autosaved = localStorage.getItem("design_autosave");
     if (autosaved) {
@@ -245,35 +301,60 @@ export default function Canvas() {
       } catch {}
     }
   }, []);
-
   useEffect(() => {
     localStorage.setItem("design_autosave", JSON.stringify(shapes));
   }, [shapes]);
 
-  /* ---------- Text edit helpers (Canva-like in-place) ---------- */
+  useEffect(() => {
+    if (!trRef.current || !stageRef.current) return;
+    const nodes = selectedIds
+      .map((id) => nodeRefs.current[id])
+      .filter(Boolean);
+    trRef.current.nodes(nodes);
+    trRef.current.getLayer()?.batchDraw();
+  }, [selectedIds, shapes]);
 
-  // Recalculate textarea placement to exactly match the Konva Text
+  const selectionBBox = useMemo(() => {
+    if (!stageRef.current || selectedIds.length <= 1) return null;
+    const rects = selectedIds
+      .map((id) => nodeRefs.current[id])
+      .filter(Boolean)
+      .map((n) => n.getClientRect());
+    if (!rects.length) return null;
+
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
+    rects.forEach((r) => {
+      minX = Math.min(minX, r.x);
+      minY = Math.min(minY, r.y);
+      maxX = Math.max(maxX, r.x + r.width);
+      maxY = Math.max(maxY, r.y + r.height);
+    });
+    return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+  }, [selectedIds, shapes]);
+
   const openTextEditorForNode = (shape, textNode) => {
     const stage = stageRef.current;
     if (!stage || !textNode) return;
 
     const stageBox = stage.container().getBoundingClientRect();
-    // Absolute (global) position of the text node
     const absPos = textNode.getAbsolutePosition();
     const rotation = textNode.rotation();
     const offsetX = textNode.offsetX() || 0;
     const offsetY = textNode.offsetY() || 0;
 
-    // Use node's width/height (before rotation) to match text wrapping precisely
     const nodeWidth = textNode.width();
     const nodeHeight = textNode.height();
 
-    // Note: If you add stage scale/position later, add them here.
     const left = stageBox.left + absPos.x;
     const top = stageBox.top + absPos.y;
 
     const fontSize = shape.fontSize ?? 22;
-    const fontFamily = shape.fontFamily ?? 'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
+    const fontFamily =
+      shape.fontFamily ??
+      'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
     const fontStyle = (shape.fontStyle ?? "normal").toLowerCase();
     const isBold = fontStyle.includes("bold");
     const isItalic = fontStyle.includes("italic");
@@ -299,7 +380,6 @@ export default function Canvas() {
       fontStyle: isItalic ? "italic" : "normal",
     });
 
-    // Auto-grow shortly after mount
     requestAnimationFrame(() => {
       const ta = document.querySelector("textarea.konva-textarea");
       if (ta) {
@@ -327,7 +407,9 @@ export default function Canvas() {
                 align: editor.align,
                 padding: editor.padding,
                 fontFamily: editor.fontFamily,
-                fontStyle: `${editor.fontWeight >= 600 ? "bold " : ""}${editor.fontStyle === "italic" ? "italic" : "normal"}`
+                fontStyle: `${editor.fontWeight >= 600 ? "bold " : ""}${
+                  editor.fontStyle === "italic" ? "italic" : "normal"
+                }`,
               }
             : x
         )
@@ -336,7 +418,6 @@ export default function Canvas() {
     setEditor(null);
   };
 
-  // Live preview without polluting history
   const liveUpdateText = (id, textValue) => {
     isApplyingHistory.current = true;
     _setShapes((prev) =>
@@ -347,15 +428,148 @@ export default function Canvas() {
 
   const cancelTextEdit = () => setEditor(null);
 
-  /* ---------- Stage handlers ---------- */
+  const registerRef = (id, node) => {
+    if (!node) delete nodeRefs.current[id];
+    else nodeRefs.current[id] = node;
+  };
 
-  const deselectStage = (e) => {
-    // only left-click on empty stage deselects
-    if (e.target === e.target.getStage() && e.evt.button === 0) {
-      if (editor) commitTextEdit(); // commit BEFORE closing editor
-      setSelectedId(null);
+  const beginMarquee = (pos) => {
+    selState.current.active = true;
+    selState.current.origin = pos;
+    setSelRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
+  };
+
+  const updateMarquee = (pos) => {
+    if (!selState.current.active) return;
+    const { origin } = selState.current;
+    const rect = {
+      x: Math.min(origin.x, pos.x),
+      y: Math.min(origin.y, pos.y),
+      width: Math.abs(pos.x - origin.x),
+      height: Math.abs(pos.y - origin.y),
+      visible: true,
+    };
+    setSelRect(rect);
+  };
+
+  const finishMarquee = () => {
+    if (!selState.current.active || !selRect) return;
+    const box = selRect;
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const nodes = stage.find(".selectable");
+    const ids = [];
+    nodes.forEach((n) => {
+      if (Konva.Util.haveIntersection(box, n.getClientRect())) {
+        ids.push(n._id ? n.id() : n.id());
+      }
+    });
+    setSelectedIds(ids);
+    selState.current.active = false;
+    setSelRect(null);
+  };
+
+  const handleStageMouseDown = (e) => {
+    const isEmpty = e.target === e.target.getStage();
+    const isLeft = e.evt.button === 0;
+
+    if (isEmpty && isLeft) {
+      if (editor) commitTextEdit();
       setContextMenu(null);
+      beginMarquee(e.target.getStage().getPointerPosition());
     }
+  };
+
+  const handleStageMouseMove = (e) => {
+    if (!selState.current.active) return;
+    updateMarquee(e.target.getStage().getPointerPosition());
+  };
+
+  const handleStageMouseUp = () => {
+    if (selState.current.active) finishMarquee();
+  };
+
+  const onShapeSelect = (id) => (evt) => {
+    const shift = !!evt?.evt?.shiftKey;
+    setContextMenu(null);
+    if (shift) {
+      setSelectedIds((prev) =>
+        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      );
+    } else {
+      setSelectedIds((prev) =>
+        prev.length === 1 && prev[0] === id ? prev : [id]
+      );
+    }
+  };
+  const deleteSelected = () => {
+    if (!selectedIds.length) return;
+    performSetShapes((prev) => prev.filter((s) => !selectedIds.includes(s.id)));
+    setSelectedIds([]);
+    setContextMenu(null);
+  };
+
+  const duplicateSelected = () => {
+    if (!selectedIds.length) return;
+    performSetShapes((prev) => {
+      const add = [];
+      selectedIds.forEach((id) => {
+        const s = prev.find((x) => x.id === id);
+        if (s) {
+          add.push({
+            ...s,
+            id: Date.now().toString() + Math.random(),
+            x: (s.x ?? 0) + 20,
+            y: (s.y ?? 0) + 20,
+          });
+        }
+      });
+      return [...prev, ...add];
+    });
+  };
+
+  const bringToFrontSelected = () => {
+    if (!selectedIds.length) return;
+    performSetShapes((prev) => {
+      const arr = [...prev];
+      selectedIds.forEach((id) => {
+        const idx = arr.findIndex((s) => s.id === id);
+        if (idx >= 0) {
+          const [item] = arr.splice(idx, 1);
+          arr.push(item);
+        }
+      });
+      return arr;
+    });
+  };
+
+  const sendToBackSelected = () => {
+    if (!selectedIds.length) return;
+    performSetShapes((prev) => {
+      const arr = [...prev];
+      [...selectedIds].reverse().forEach((id) => {
+        const idx = arr.findIndex((s) => s.id === id);
+        if (idx >= 0) {
+          const [item] = arr.splice(idx, 1);
+          arr.unshift(item);
+        }
+      });
+      return arr;
+    });
+  };
+
+  const toggleLockSelected = () => {
+    if (!selectedIds.length) return;
+    performSetShapes((prev) =>
+      prev.map((s) =>
+        selectedIds.includes(s.id) ? { ...s, locked: !s.locked } : s
+      )
+    );
+  };
+
+  const updateShape = (id, newAttrs) => {
+    performSetShapes((prev) => prev.map((s) => (s.id === id ? newAttrs : s)));
   };
 
   const addShape = (type) => {
@@ -366,21 +580,23 @@ export default function Canvas() {
       y: 100 + Math.random() * 250,
       width: 240,
       height: 90,
-      fill: "#111",
+      fill: "#fff",
       stroke: "#000",
       strokeWidth: 1,
       opacity: 1,
       locked: false,
-      // Text defaults (so editor matches perfectly)
+      
       fontSize: 22,
       text: "Double-click to edit",
       letterSpacing: 0,
       lineHeight: 1.2,
       align: "left",
       padding: 0,
-      fontFamily: 'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif',
+      fontFamily:
+        'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif',
       fontStyle: "normal",
     };
+
     const preset =
       type === "circle"
         ? { width: 120, height: 120 }
@@ -388,105 +604,61 @@ export default function Canvas() {
         ? { width: 160, height: 100 }
         : type === "triangle"
         ? { width: 120, height: 100 }
+        : type === "line"
+        ? {
+            width: 160,
+            height: 0,
+            fill: "transparent",
+            stroke: "#111",
+            strokeWidth: 3,
+          }
+        : type === "text"
+        ? { width: 240, height: 40, fill: "#111", stroke: "transparent" }
         : {};
+
     performSetShapes((prev) => [...prev, { ...base, ...preset, type }]);
   };
 
-  const updateShape = (id, newAttrs) => {
-    performSetShapes((prev) => prev.map((s) => (s.id === id ? newAttrs : s)));
-  };
-
-  const deleteShape = (id) => {
-    performSetShapes((prev) => prev.filter((s) => s.id !== id));
-    setContextMenu(null);
-    if (selectedId === id) setSelectedId(null);
-  };
-
-  const duplicateShape = (id) => {
+  const fileInputRef = useRef(null);
+  const triggerAddImage = () => fileInputRef.current?.click();
+  const onFilesSelected = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
     performSetShapes((prev) => {
-      const s = prev.find((x) => x.id === id);
-      if (!s) return prev;
-      const copy = { ...s, id: Date.now().toString(), x: s.x + 20, y: s.y + 20 };
-      return [...prev, copy];
+      const added = files.map((f, idx) => ({
+        id: Date.now().toString() + "_" + idx,
+        type: "image",
+        src: URL.createObjectURL(f),
+        x: 120 + Math.random() * 240,
+        y: 90 + Math.random() * 180,
+        width: 220,
+        height: 160,
+        opacity: 1,
+        locked: false,
+      }));
+      return [...prev, ...added];
     });
-    setContextMenu(null);
-  };
-
-  const bringToFront = (id) => {
-    performSetShapes((prev) => {
-      const idx = prev.findIndex((s) => s.id === id);
-      if (idx < 0) return prev;
-      const arr = [...prev];
-      const [item] = arr.splice(idx, 1);
-      arr.push(item);
-      return arr;
-    });
-    setContextMenu(null);
-  };
-
-  const sendToBack = (id) => {
-    performSetShapes((prev) => {
-      const idx = prev.findIndex((s) => s.id === id);
-      if (idx < 0) return prev;
-      const arr = [...prev];
-      const [item] = arr.splice(idx, 1);
-      arr.unshift(item);
-      return arr;
-    });
-    setContextMenu(null);
-  };
-
-  const toggleLock = (id) => {
-    performSetShapes((prev) => prev.map((s) => (s.id === id ? { ...s, locked: !s.locked } : s)));
-  };
-
-  const saveSnapshot = () => {
-    localStorage.setItem("design_backup", JSON.stringify(shapes));
-    alert("✅ Saved snapshot!");
-  };
-
-  const loadSnapshot = () => {
-    const saved = localStorage.getItem("design_backup");
-    if (saved) {
-      if (window.confirm("Load saved snapshot")) {
-        const parsed = JSON.parse(saved);
-        performSetShapes(parsed);
-      }
-    } else {
-      alert("No saved snapshot found.");
-    }
-  };
-
-  const clearDesign = () => {
-    if (window.confirm("Clear all shapes?")) {
-      performSetShapes([]);
-      setSelectedId(null);
-      setContextMenu(null);
-      setEditor(null);
-    }
+    e.target.value = ""; // allow re-select same file
   };
 
   const handleRightClick = (shape, e) => {
-    if (editor) commitTextEdit(); // commit before opening menu
+    if (editor) commitTextEdit();
     const stage = e.target.getStage();
     const p = stage.getPointerPosition();
-    setSelectedId(shape.id);
+    if (!selectedIds.includes(shape.id)) setSelectedIds([shape.id]);
     setContextMenu({ id: shape.id, x: p.x, y: p.y });
   };
 
   const onStartTextEdit = (shape, node) => {
-    if (editor && editor.id !== shape.id) {
-      commitTextEdit();
-    }
+    if (selectedIds.length > 1) return; 
+    if (editor && editor.id !== shape.id) commitTextEdit();
     const textNode = node || stageRef.current?.findOne(`#${shape.id}`);
     if (!textNode) return;
-
-    setSelectedId(shape.id);
+    setSelectedIds([shape.id]);
     setContextMenu(null);
     openTextEditorForNode(shape, textNode);
   };
 
-  // Keep editor stuck to the node if the window resizes/scrolls
   useEffect(() => {
     if (!editor) return;
     const sync = () => {
@@ -502,6 +674,71 @@ export default function Canvas() {
     };
   }, [editor, shapes]);
 
+  useEffect(() => {
+    const onKey = (e) => {
+      const inText =
+        e.target &&
+        (e.target.tagName === "TEXTAREA" ||
+          e.target.tagName === "INPUT" ||
+          e.target.isContentEditable);
+      if (inText) return;
+      const meta = e.metaKey || e.ctrlKey;
+      const key = e.key.toLowerCase();
+
+      if (meta && key === "z") {
+        e.preventDefault();
+        if (e.shiftKey) redo();
+        else undo();
+        return;
+      }
+      if (meta && key === "y") {
+        e.preventDefault();
+        redo();
+        return;
+      }
+      if (key === "delete" || key === "backspace") {
+        e.preventDefault();
+        deleteSelected();
+        return;
+      }
+      if (meta && key === "d") {
+        e.preventDefault();
+        duplicateSelected();
+        return;
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedIds, shapes]);
+
+  const saveSnapshot = () => {
+    localStorage.setItem("design_backup", JSON.stringify(shapes));
+    alert("✅ Saved snapshot!");
+  };
+  const loadSnapshot = () => {
+    const saved = localStorage.getItem("design_backup");
+    if (saved) {
+      if (window.confirm("Load saved snapshot")) {
+        const parsed = JSON.parse(saved);
+        performSetShapes(parsed);
+      }
+    } else {
+      alert("No saved snapshot found.");
+    }
+  };
+  const clearDesign = () => {
+    if (window.confirm("Clear all shapes?")) {
+      performSetShapes([]);
+      setSelectedIds([]);
+      setContextMenu(null);
+      setEditor(null);
+    }
+  };
+
+  const allLocked =
+    selectedIds.length > 0 &&
+    selectedIds.every((id) => (shapes.find((s) => s.id === id) || {}).locked);
+
   return (
     <div className="canvas-layout" onContextMenu={(e) => e.preventDefault()}>
       <aside className={`left-panel ${sidebarOpen ? "open" : ""}`}>
@@ -516,37 +753,91 @@ export default function Canvas() {
         </div>
       </aside>
 
-      {/* Canvas */}
       <main className="canvas-main">
         <div className="canvas-surface" ref={surfaceRef}>
           <Stage
             ref={stageRef}
             width={surfaceW}
             height={surfaceH}
-            onMouseDown={deselectStage}
-            onTouchStart={deselectStage}
+            onMouseDown={handleStageMouseDown}
+            onMouseMove={handleStageMouseMove}
+            onMouseUp={handleStageMouseUp}
           >
             <Layer>
               {shapes.map((shape) => (
                 <Shape
                   key={shape.id}
                   shape={shape}
-                  isSelected={shape.id === selectedId}
+                  isSelected={selectedIds.includes(shape.id)}
                   isEditingText={editor?.id === shape.id}
-                  onSelect={() => {
-                    if (editor && editor.id !== shape.id) commitTextEdit();
-                    setSelectedId(shape.id);
-                    setContextMenu(null);
-                  }}
+                  onSelect={onShapeSelect(shape.id)}
                   onChange={(newAttrs) => updateShape(shape.id, newAttrs)}
                   onRightClick={handleRightClick}
                   onStartTextEdit={onStartTextEdit}
+                  registerRef={registerRef}
                 />
               ))}
+
+              {selRect && selRect.visible && (
+                <Rect
+                  x={selRect.x}
+                  y={selRect.y}
+                  width={selRect.width}
+                  height={selRect.height}
+                  fill="rgba(0, 120, 255, 0.1)"
+                  stroke="rgba(0, 120, 255, 0.6)"
+                  dash={[4, 4]}
+                />
+              )}
+            </Layer>
+
+            {selectionBBox && (
+              <Layer>
+                <Rect
+                  x={selectionBBox.x}
+                  y={selectionBBox.y}
+                  width={selectionBBox.width}
+                  height={selectionBBox.height}
+                  fill="rgba(0,0,0,0.001)"         
+                  strokeEnabled={false}
+                  draggable
+                  onDragStart={(e) => {
+                    dragProxyPosRef.current = e.target.getAbsolutePosition();
+                  }}
+                  onDragMove={(e) => {
+                    if (!dragProxyPosRef.current) return;
+                    const p = e.target.getAbsolutePosition();
+                    const dx = p.x - dragProxyPosRef.current.x;
+                    const dy = p.y - dragProxyPosRef.current.y;
+
+                    isApplyingHistory.current = true;
+                    _setShapes((prev) =>
+                      prev.map((s) =>
+                        selectedIds.includes(s.id)
+                          ? { ...s, x: (s.x || 0) + dx, y: (s.y || 0) + dy }
+                          : s
+                      )
+                    );
+                    isApplyingHistory.current = false;
+
+                    dragProxyPosRef.current = p;
+                  }}
+                  onDragEnd={() => {
+                    dragProxyPosRef.current = null;
+                  }}
+                  listening
+                />
+              </Layer>
+            )}
+
+            <Layer>
+              <Transformer
+                ref={trRef}
+                rotateEnabled={true}
+              />
             </Layer>
           </Stage>
 
-          {/* Toolbar */}
           <div className="bottom-toolbar">
             <button onClick={undo} title="Undo (Ctrl/Cmd+Z)" aria-label="Undo">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
@@ -572,63 +863,224 @@ export default function Canvas() {
             <button onClick={() => addShape("triangle")} title="Triangle" aria-label="Triangle">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2L2 22h20L12 2z" /></svg>
             </button>
+            <button onClick={() => addShape("line")} title="Line" aria-label="Line">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.6">
+                <path d="M4 18L20 6" strokeLinecap="round" />
+              </svg>
+            </button>
             <button onClick={() => addShape("text")} title="Text" aria-label="Text">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                 <path d="M17 6H7M12 6v12" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
+            <button onClick={triggerAddImage} title="Image" aria-label="Image">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.6">
+                <path d="M4 6h16v12H4z" />
+                <path d="M7 13l3-3 4 4 3-3 2 2" />
+                <circle cx="9" cy="9" r="1.5" />
+              </svg>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: "none" }}
+              onChange={onFilesSelected}
+            />
+
+            <div className="sep" />
+
+            <button onClick={duplicateSelected} title="Duplicate (Cmd/Ctrl+D)" aria-label="Duplicate">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <rect x="9" y="9" width="10" height="10" rx="2" />
+                <rect x="5" y="5" width="10" height="10" rx="2" />
+              </svg>
+            </button>
+            <button onClick={bringToFrontSelected} title="Bring front" aria-label="Bring front">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <path d="M12 7V3" />
+                <path d="M8 7h8" />
+                <rect x="6" y="7" width="12" height="10" rx="2" />
+                <path d="M8 21h8" />
+              </svg>
+            </button>
+            <button onClick={sendToBackSelected} title="Send back" aria-label="Send back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <path d="M12 17v4" />
+                <path d="M8 17h8" />
+                <rect x="6" y="7" width="12" height="10" rx="2" />
+                <path d="M8 3h8" />
+              </svg>
+            </button>
+            <button onClick={deleteSelected} title="Delete (Del/Backspace)" aria-label="Delete">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                <path d="M10 11v6M14 11v6" />
+              </svg>
+            </button>
           </div>
 
-          {/* Context Menu */}
           {contextMenu && (() => {
-            const s = shapes.find((x) => x.id === contextMenu.id);
-            if (!s) return null;
-            const isText = s.type === "text";
+            const isSingle = selectedIds.length === 1;
+            const s = isSingle ? shapes.find((x) => x.id === selectedIds[0]) : null;
+            const isText = isSingle && s?.type === "text";
+            const isLineOrShape =
+              isSingle &&
+              (s?.type === "rect" ||
+                s?.type === "circle" ||
+                s?.type === "triangle" ||
+                s?.type === "line");
+
             return (
               <div
                 className="context-menu"
-                style={{ top: Math.max(8, contextMenu.y + 8), left: Math.max(8, contextMenu.x + 8) }}
+                style={{
+                  top: Math.max(8, contextMenu.y + 8),
+                  left: Math.max(8, contextMenu.x + 8),
+                }}
               >
-                <div className="row">
-                  <label>Fill <input type="color" value={s.fill || "#111"}
-                    onChange={(e) => updateShape(s.id, { ...s, fill: e.target.value })} /></label>
-                  <label>Stroke <input type="color" value={s.stroke || "#000"}
-                    onChange={(e) => updateShape(s.id, { ...s, stroke: e.target.value })} /></label>
-                </div>
+                {isSingle && isLineOrShape && (
+                  <>
+                    <div className="row">
+                      <label>
+                        Fill
+                        <input
+                          type="color"
+                          value={s.fill || "#111"}
+                          onChange={(e) =>
+                            updateShape(s.id, { ...s, fill: e.target.value })
+                          }
+                        />
+                      </label>
+                      <label>
+                        Stroke
+                        <input
+                          type="color"
+                          value={s.stroke || "#000"}
+                          onChange={(e) =>
+                            updateShape(s.id, { ...s, stroke: e.target.value })
+                          }
+                        />
+                      </label>
+                    </div>
+                    <div className="row">
+                      <label>
+                        Stroke W
+                        <input
+                          type="range"
+                          min="0"
+                          max="12"
+                          step="1"
+                          value={s.strokeWidth ?? 1}
+                          onChange={(e) =>
+                            updateShape(s.id, {
+                              ...s,
+                              strokeWidth: +e.target.value,
+                            })
+                          }
+                        />
+                      </label>
+                      <label>
+                        Opacity
+                        <input
+                          type="range"
+                          min="0.1"
+                          max="1"
+                          step="0.05"
+                          value={s.opacity ?? 1}
+                          onChange={(e) =>
+                            updateShape(s.id, {
+                              ...s,
+                              opacity: +e.target.value,
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                  </>
+                )}
 
-                <div className="row">
-                  <label>Stroke W
-                    <input type="range" min="0" max="12" step="1" value={s.strokeWidth ?? 1}
-                      onChange={(e) => updateShape(s.id, { ...s, strokeWidth: +e.target.value })} />
-                  </label>
-                  <label>Opacity
-                    <input type="range" min="0.1" max="1" step="0.05" value={s.opacity ?? 1}
-                      onChange={(e) => updateShape(s.id, { ...s, opacity: +e.target.value })} />
-                  </label>
-                </div>
-
-                {isText && (
+                {isSingle && isText && (
                   <div className="row">
-                    <label>Font Size
-                      <input type="range" min="10" max="96" step="1" value={s.fontSize ?? 22}
-                        onChange={(e) => updateShape(s.id, { ...s, fontSize: +e.target.value })} />
+                    <label>
+                      Font Size
+                      <input
+                        type="range"
+                        min="10"
+                        max="96"
+                        step="1"
+                        value={s.fontSize ?? 22}
+                        onChange={(e) =>
+                          updateShape(s.id, {
+                            ...s,
+                            fontSize: +e.target.value,
+                          })
+                        }
+                      />
                     </label>
+                    <button
+                      className="ghost-btn"
+                      onClick={() =>
+                        onStartTextEdit(
+                          s,
+                          stageRef.current.findOne(`#${s.id}`)
+                        )
+                      }
+                    >
+                      Edit text
+                    </button>
                   </div>
                 )}
 
                 <div className="full">
-                  <button className="ghost-btn" onClick={() => duplicateShape(s.id)}>Duplicate</button>
-                  <button className="ghost-btn" onClick={() => bringToFront(s.id)}>Bring front</button>
-                  <button className="ghost-btn" onClick={() => sendToBack(s.id)}>Send back</button>
-                </div>
-
-                <div className="full">
-                  <button className="ghost-btn" onClick={() => toggleLock(s.id)}>
-                    {s.locked ? "Unlock" : "Lock"}
+                  <button className="ghost-btn" onClick={duplicateSelected} title="Duplicate">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                      <rect x="9" y="9" width="10" height="10" rx="2" />
+                      <rect x="5" y="5" width="10" height="10" rx="2" />
+                    </svg>
                   </button>
-                  <button className="ghost-btn" style={{ color: "#b00020", borderColor: "rgba(176,0,32,0.2)" }}
-                          onClick={() => deleteShape(s.id)}>
-                    Delete
+                  <button className="ghost-btn" onClick={bringToFrontSelected} title="Bring front">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                      <path d="M12 7V3" />
+                      <path d="M8 7h8" />
+                      <rect x="6" y="7" width="12" height="10" rx="2" />
+                      <path d="M8 21h8" />
+                    </svg>
+                  </button>
+                  <button className="ghost-btn" onClick={sendToBackSelected} title="Send back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                      <path d="M12 17v4" />
+                      <path d="M8 17h8" />
+                      <rect x="6" y="7" width="12" height="10" rx="2" />
+                      <path d="M8 3h8" />
+                    </svg>
+                  </button>
+
+                  <button
+                    className="ghost-btn"
+                    onClick={toggleLockSelected}
+                    title={allLocked ? "Unlock" : "Lock"}
+                    aria-label={allLocked ? "Unlock selected" : "Lock selected"}
+                  >
+                    <IconLock locked={allLocked} />
+                  </button>
+
+                  <button
+                    className="ghost-btn"
+                    style={{ color: "#b00020", borderColor: "rgba(176,0,32,0.2)" }}
+                    onClick={deleteSelected}
+                    title="Delete"
+                    aria-label="Delete selected"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -641,10 +1093,9 @@ export default function Canvas() {
               className="konva-textarea"
               style={{
                 position: "absolute",
-                left: editor.x - 1 + "px",
-                top: editor.y - 80 + "px",
+                left: editor.x -1 + "px",
+                top: editor.y -80 + "px",
                 width: editor.width + "px",
-                // height auto-grow
                 minHeight: editor.height + "px",
                 transform: `rotate(${editor.rotation}deg)`,
                 transformOrigin: `${editor.offsetX}px ${editor.offsetY}px`,
@@ -672,9 +1123,7 @@ export default function Canvas() {
               onChange={(e) => {
                 const val = e.target.value;
                 setEditor((v) => ({ ...v, value: val }));
-                // live preview on canvas
                 liveUpdateText(editor.id, val);
-                // auto-grow
                 e.currentTarget.style.height = "auto";
                 e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
               }}
