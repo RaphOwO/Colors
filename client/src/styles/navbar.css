@@ -71,6 +71,10 @@ nav {
     transition: filter 0.3s ease;
 }
 
+.home:hover {
+    text-decoration: none;
+}
+
 ul.nav a,
 ul.sidebar a {
     font: inherit;
