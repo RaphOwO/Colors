@@ -7,7 +7,6 @@ import Navbar from './components/navbar.jsx';
 import Home from './pages/home.jsx';
 import ColorTheory from './pages/colorTheory.jsx';
 import Meaning from './pages/colorMeaning.jsx';
-import Composition from './pages/composition.jsx';
 import Login from './components/login.jsx';
 import Canvas from './pages/canvas.jsx';
 import CompositionTheory from './pages/compositionTheory.jsx';
@@ -42,7 +41,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/color/theory" element={<ColorTheory />} />
         <Route path="/color/meaning" element={<Meaning/>}/>
-        <Route path="/composition" element={<Composition />} />
         <Route path="/composition/canvas" element={<Canvas/>}/>
         <Route path="/composition/theory" element={<CompositionTheory/>}/>
       </Routes>
