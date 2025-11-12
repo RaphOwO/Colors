@@ -1087,6 +1087,7 @@ export default function Canvas() {
             );
           })()}
 
+          {/* In-place Textarea (Canva-like) */}
           {editor && (
             <textarea
               className="konva-textarea"

@@ -78,6 +78,10 @@ function Sidebar({ className, user, onLoginClick, onLogOutClick,isCompositionPag
 
       />
 
+      <li>
+        <Link to="/test">Test</Link>
+      </li>
+
       {user ? (
         <li><button onClick={onLogOutClick}>Logout</button></li>
       ) : (

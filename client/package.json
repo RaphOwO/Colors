@@ -12,16 +12,19 @@
   "dependencies": {
     "@fontsource/montserrat": "^5.2.7",
     "framer-motion": "^12.23.22",
+    "konva": "^10.0.8",
+    "lucide-react": "^0.553.0",
     "motion": "^12.23.22",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-konva": "^19.2.0",
     "react-router-dom": "^7.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-react": "^5.1.0",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

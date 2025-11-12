@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import Section from '../components/section.jsx';
+import transition from '../components/transition.jsx';
 import '../styles/theory.css';
 import '../App.css';
+import colorData from '../content/data.json'; 
 
 const ColorWheelPicker = ({ onColorChange }) => {
   const canvasRef = useRef(null);
@@ -454,7 +456,7 @@ function ColorTheory() {
       },
       { 
         threshold: 0.5,
-        rootMargin: "-15% 0px -25% 0px"
+        rootMargin: "-20% 0px -25% 0px"
        }
     );
 
@@ -480,19 +482,19 @@ function ColorTheory() {
             >
               <rect id="background" width="1920" height="1080" style={{"--bg-color": selectedColor}}/>
               <g id="group3">
-                <path d="M1489.22,125.12c0,8.61-6.98,15.58-15.58,15.58s-15.59-6.97-15.59-15.58,6.98-15.58,15.59-15.58,15.58,6.97,15.58,15.58Z" fill="#29abe2"/>
-                <circle cx="63.25" cy="510.13" r="20.78" transform="translate(-450.42 490.85) rotate(-80.78)" fill="#29abe2"/>
-                <path d="M466.67,838.12c-102.55-74.23-277.02-71.79-336.36-2.28-25.41,29.76-22.94,69.92-19.46,150.28,1.73,40.16,3.06,70.59,7.33,95.22h429.48c7.31-24.33,13.72-55.72,11.21-87.25-4.52-56.71-38.13-116.83-92.21-155.97Z" fill="#29abe2"/>
-                <path d="M1920,146.91c-60.99-31.7-122.13-34.91-157.91-36.78-147.14-7.67-267.39,61.19-263.58,77.82,3.38,14.75,102.49-20.29,200.22,37.76,30.38,18.05,49.13,38.26,56.89,46.76,108.11,118.31,34.92,273.32,115.08,336.36,13.88,10.92,30.93,17.93,49.3,21.5V146.91Z" fill="#29abe2"/>
+                <path d="M1489.22,125.12c0,8.61-6.98,15.58-15.58,15.58s-15.59-6.97-15.59-15.58,6.98-15.58,15.59-15.58,15.58,6.97,15.58,15.58Z"/>
+                <circle cx="63.25" cy="510.13" r="20.78" transform="translate(-450.42 490.85) rotate(-80.78)"/>
+                <path d="M466.67,838.12c-102.55-74.23-277.02-71.79-336.36-2.28-25.41,29.76-22.94,69.92-19.46,150.28,1.73,40.16,3.06,70.59,7.33,95.22h429.48c7.31-24.33,13.72-55.72,11.21-87.25-4.52-56.71-38.13-116.83-92.21-155.97Z"/>
+                <path d="M1920,146.91c-60.99-31.7-122.13-34.91-157.91-36.78-147.14-7.67-267.39,61.19-263.58,77.82,3.38,14.75,102.49-20.29,200.22,37.76,30.38,18.05,49.13,38.26,56.89,46.76,108.11,118.31,34.92,273.32,115.08,336.36,13.88,10.92,30.93,17.93,49.3,21.5V146.91Z"/>
               </g>
               <g id="group2">
-                <circle cx="1629.48" cy="762.61" r="22.73" fill="#ff7bac"/>
-                <path d="M679.31,959.45c-50.52-12.35-78.42,4.64-148.9,16.32-64.54,10.69-260.32,43.14-342.47-43.84-71.68-75.89-21.43-205.23-95.89-276.71-38.87-37.32-84.47-52.18-92.05-54.47v479.25h824.77c-32.26-51.89-79.18-104.35-145.46-120.55Z" fill="#ff7bac"/>
-                <path d="M1920,1079.14v-476.24c-42.55-6.61-101.69-14.07-145.68-5.41-4.43.87-11.86,2.53-19.48,7.79-14.7,10.15-20.49,27.06-23.38,40.26-13.15,60.1-4.78,219.97-4.41,227.27,6.13,118.37-17.42,133.19,7,167.01,12.61,17.46,31.51,30.98,53.02,40.18h131.45c.5-.28.99-.57,1.48-.86Z" fill="#ff7bac"/>
+                <circle cx="1629.48" cy="762.61" r="22.73"/>
+                <path d="M679.31,959.45c-50.52-12.35-78.42,4.64-148.9,16.32-64.54,10.69-260.32,43.14-342.47-43.84-71.68-75.89-21.43-205.23-95.89-276.71-38.87-37.32-84.47-52.18-92.05-54.47v479.25h824.77c-32.26-51.89-79.18-104.35-145.46-120.55Z"/>
+                <path d="M1920,1079.14v-476.24c-42.55-6.61-101.69-14.07-145.68-5.41-4.43.87-11.86,2.53-19.48,7.79-14.7,10.15-20.49,27.06-23.38,40.26-13.15,60.1-4.78,219.97-4.41,227.27,6.13,118.37-17.42,133.19,7,167.01,12.61,17.46,31.51,30.98,53.02,40.18h131.45c.5-.28.99-.57,1.48-.86Z"/>
               </g>
               <g id="group1">
-                <circle cx="833.38" cy="932.21" r="35.06" transform="translate(-346.79 1345.41) rotate(-67.5)" fill="#29abe2"/>
-                <path d="M1920,1080v-40.17c-4.01.53-6.57,1.13-6.57,1.13-17.62,4.23-99.65,19-126.23-8.36-10.13-10.43-9.57-42.86-8.46-107.73.49-28.74,3.03-46.08-9.4-59.34-10.36-11.04-25.49-16.12-50.12-20.64-64.83-11.89-110.34-15.16-180.12,0-41.36,8.98-62.03,13.47-75.17,24.03-44.8,35.98-35.46,98.19-48.05,190.91-.86,6.35-1.86,13.09-3.03,20.17h507.15Z" fill="#29abe2"/>
+                <circle cx="833.38" cy="932.21" r="35.06" transform="translate(-346.79 1345.41) rotate(-67.5)"/>
+                <path d="M1920,1080v-40.17c-4.01.53-6.57,1.13-6.57,1.13-17.62,4.23-99.65,19-126.23-8.36-10.13-10.43-9.57-42.86-8.46-107.73.49-28.74,3.03-46.08-9.4-59.34-10.36-11.04-25.49-16.12-50.12-20.64-64.83-11.89-110.34-15.16-180.12,0-41.36,8.98-62.03,13.47-75.17,24.03-44.8,35.98-35.46,98.19-48.05,190.91-.86,6.35-1.86,13.09-3.03,20.17h507.15Z"/>
               </g>
           </svg>
           <ColorWheelPicker onColorChange={(color) => setSelectedColor(color.hex)} />
@@ -504,59 +506,56 @@ function ColorTheory() {
           </div>
           <div className='color-mode-section' data-mode="monochromatic">
             <section ref={setSecRef} className='section'>
-              <h2>Monochromatic</h2>
-              <p>Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look.</p>
+              <h2>{colorData[0].topic}</h2>
+              <p>{colorData[0].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="complementary">
             <section ref={setSecRef} className='section'>
-              <h2>Complementary</h2>
-              <p>Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination – together, these colors will appear brighter and more prominent.</p>
+              <h2>{colorData[1].topic}</h2>
+              <p>{colorData[1].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="analogous">
             <section ref={setSecRef} className='section'>
-              <h2>Analogous</h2>
-              <p>Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents.</p>
+              <h2>{colorData[2].topic}</h2>
+              <p>{colorData[2].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="triadic">
             <section ref={setSecRef} className='section'>
-              <h2>Triadic</h2>
-              <p>Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination — making it more versatile. This combination creates bold, vibrant color palettes.</p>
+              <h2>{colorData[3].topic}</h2>
+              <p>{colorData[3].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="tetradic">
             <section ref={setSecRef} className='section'>
-              <h2>Tetradic</h2>
-              <p>Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance,</p>
+            <h2>{colorData[4].topic}</h2>
+            <p>{colorData[4].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="analogous">
             <section ref={setSecRef} className='section'>
-              <h2>Warm & Cool Color</h2>
-              <p>Warm colors are the colors from red through to yellow. These colors are said to bring to mind warmth, like the sun. 
-                <br/>
-                <br/>
-                Cool colors are the colors from blue to green and purple. These colors are said to bring to mind coolness, like water.</p>
+              <h2>{colorData[5].topic}</h2>
+              <p style={{ whiteSpace: "pre-line" }}>{colorData[5].content}</p>
             </section>
           </div>
           <div className="color-mode-section" data-mode="shade">
             <section ref={setSecRef} className='section'>
-              <h2>Shade</h2>
-              <p>A shade is created by adding black to a base hue, darkening the color. This creates a deeper, richer color. Shades can be quite dramatic and can be overpowering.</p>
+              <h2>{colorData[6].topic}</h2>
+              <p>{colorData[6].content}</p>
             </section>
           </div> 
           <div className="color-mode-section" data-mode="tint">
             <section ref={setSecRef} className='section'>
-              <h2>Tint</h2>
-              <p>A tint is created by adding white to a base hue, lightening the color. This can make a color less intense, and is useful when balancing more vivid color combinations.</p>
+            <h2>{colorData[7].topic}</h2>
+            <p>{colorData[7].content}</p>
             </section>
           </div> 
           <div className="color-mode-section" data-mode="tones">
             <section ref={setSecRef} className='section'>
-              <h2>Tones</h2>
-              <p>A tone is created by combining black and white—or grey—with a base hue. Like tints, tones are subtler versions of the original color. Tones are less likely to look pastel, and can reveal complexities not apparent in the base color.</p>
+            <h2>{colorData[8].topic}</h2>
+            <p>{colorData[8].content}</p>
             </section>
           </div> 
         </div>
@@ -565,4 +564,4 @@ function ColorTheory() {
   );
 }
 
-export default ColorTheory;
+export default transition(ColorTheory);
