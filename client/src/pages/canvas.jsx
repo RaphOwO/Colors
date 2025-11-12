@@ -11,6 +11,10 @@ import {
   Image as KonvaImage,
 } from "react-konva";
 import "../styles/Canvas.css";
+import { confirmAlert } from "../components/confirm.jsx";
+import { snackbarAlert } from "../components/snackbarAlert.jsx";
+
+
 
 function useContainerSize(ref) {
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -713,21 +717,49 @@ export default function Canvas() {
 
   const saveSnapshot = () => {
     localStorage.setItem("design_backup", JSON.stringify(shapes));
-    alert("✅ Saved snapshot!");
+    snackbarAlert({
+      iconType: "success",
+      message: "Snapshot saved",
+      iconBg: "rgba(176, 247, 148, 1)",
+      iconColor: "white",
+      duration: 2500,
+    });
   };
-  const loadSnapshot = () => {
+  const loadSnapshot = async () => {
     const saved = localStorage.getItem("design_backup");
     if (saved) {
-      if (window.confirm("Load saved snapshot")) {
+      const ok = await confirmAlert({
+          iconType: "warning",
+          title: "Save",
+          message: "Load saved snapshot?",
+          iconBg: "#FEF3C7",  
+          iconColor: "#92400E",
+          snackScale: 1.1,
+       });
+      if (ok) {
         const parsed = JSON.parse(saved);
         performSetShapes(parsed);
       }
     } else {
-      alert("No saved snapshot found.");
+      snackbarAlert({
+        iconType: "fail",
+        message: "Snapshot not found",
+        iconBg: "rgb(255, 90, 90)",
+        iconColor: "white",
+        duration: 2500,
+      });
     }
   };
-  const clearDesign = () => {
-    if (window.confirm("Clear all shapes?")) {
+  const clearDesign = async() => {
+    const ok = await confirmAlert({
+      iconType: "warning",
+      title: "CLEAR",
+      message: "Clear all shapes?",
+      iconBg: "#FEF3C7",  
+      iconColor: "#92400E",
+      snackScale: 1.1,
+    });
+    if (ok) {
       performSetShapes([]);
       setSelectedIds([]);
       setContextMenu(null);
