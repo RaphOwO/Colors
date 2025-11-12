@@ -4,6 +4,7 @@ import transition from "../components/transition.jsx";
 import img1 from "../assets/homeImg1.png";
 import img2 from "../assets/homeImg2.png";
 import img3 from "../assets/homeImg3.png";
+import PageFooter from "../components/footer.jsx";
 import "../App.css";
 import "../styles/home.css";
 
@@ -115,6 +116,7 @@ function Home() {
               <img src={img3}></img>
             </section>
           </div>
+          <PageFooter/>
         </div>
       </Section>
     </div>

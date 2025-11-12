@@ -4,7 +4,6 @@
   background: linear-gradient(270deg, var(--grad1), var(--grad2));
   background-size: 200% 200%;
   animation: gradientMove 8s ease-in-out infinite alternate;
-  padding-bottom: 5rem;
   overflow-x: hidden;
 }
 
@@ -82,7 +81,7 @@ h1.home-title {
 }
 
 .topic-section.right {
-    flex-direction: row-reverse;
+  flex-direction: row-reverse;
 }
 
 .topic-text {
@@ -101,7 +100,7 @@ h1.home-title {
 
 .topic-text p {
   font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.85); 
+  color: rgba(255, 255, 255, 0.85);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -124,9 +123,9 @@ h1.home-title {
 
 @media (max-width: 900px) {
   .topic-section {
-    align-items: center;      
-    justify-content: center; 
-    text-align: center;     
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 2rem;
     min-height: auto;
     flex-direction: column;
@@ -198,4 +197,9 @@ h1.home-title {
 .topic-section.visible .topic-text p {
   transform: translateY(0);
   opacity: 1;
+}
+
+.footer {
+  position: relative;
+  bottom: -80px;
 }

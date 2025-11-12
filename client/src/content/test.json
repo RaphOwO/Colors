@@ -1,89 +1,262 @@
 [
-    {
-      "question": "What is tint?",
-      "options": [
-        "A mixture of a color with white",
-        "A mixture of a color with black",
-        "A mixture of three colors",
-        "A mixture of colors that are complementary"
-      ],
-      "answer": "A mixture of a color with white",
-      "explanation": "Tint refers to a mixture of a color with white. When white is added to a color, it lightens the shade, creating a lighter version of the original color."
-    },
-    {
-      "question": "A mixture of a color with black is what?",
-      "options": ["Value", "Tint", "Saturation", "Shade"],
-      "answer": "Shade",
-      "explanation": "When a color is mixed with black, it becomes darker and less vibrant. This darkened version of the color is called a shade."
-    },
-    {
-      "question": "What does color do?",
-      "options": [
-        "Fills in empty spaces",
-        "Makes things artsy",
-        "Colors can draw attention; have an emotional and psychological impact",
-        "Takes up space"
-      ],
-      "answer": "Colors can draw attention; have an emotional and psychological impact",
-      "explanation": "Different colors can evoke emotions and moods. They can highlight elements and create visual interest in a composition."
-    },
-    {
-      "question": "Colors that are across from each other on a color wheel are called?",
-      "options": ["Analogous", "Tertiary", "Complementary", "Additive"],
-      "answer": "Complementary",
-      "explanation": "Complementary colors are pairs that create a strong contrast because they are on opposite sides of the color wheel."
-    },
-    {
-      "question": "Warm colors are usually associated with what kind of emotion?",
-      "options": ["Peace", "Passiveness", "Laziness", "Aggression"],
-      "answer": "Aggression",
-      "explanation": "Warm colors like red, orange, and yellow are associated with energy, intensity, and sometimes aggression."
-    },
-    {
-      "question": "What is color?",
-      "options": [
-        "Used in paints, dyes, and ink made by absorbing wavelengths of light",
-        "A substance used to give something a particular color",
-        "Pigmentation of the skin",
-        "The property possessed by an object of producing different sensations on the eye"
-      ],
-      "answer": "The property possessed by an object of producing different sensations on the eye",
-      "explanation": "Color is the visual sensation caused by the way an object reflects or emits light, perceived by the eye."
-    },
-    {
-      "question": "Colors are said to be contrasting if they are _____________.",
-      "options": ["Different in hue", "Different in lightness and darkness", "Different in saturation", "Similar in tone"],
-      "answer": "Different in lightness and darkness",
-      "explanation": "Contrasting colors stand out from each other due to differences in lightness and darkness."
-    },
-    {
-      "question": "Formal balance is another word for which type of balance?",
-      "options": ["Symmetrical", "Asymmetrical", "Radial", "Dynamic"],
-      "answer": "Symmetrical",
-      "explanation": "Formal balance refers to symmetry, where elements are evenly arranged to create a sense of stability."
-    },
-    {
-      "question": "Rhythm in design is:",
-      "options": [
-        "The use of contrasting colors",
-        "The repetition or alternation of elements to create movement",
-        "The brightness of colors",
-        "The use of complementary hues"
-      ],
-      "answer": "The repetition or alternation of elements to create movement",
-      "explanation": "Rhythm is created by repeating visual elements in a pattern, leading the viewer’s eye through the composition."
-    },
-    
-    {
-      "question": "Analogous colors are:",
-      "options": [
-        "Colors opposite each other on the color wheel",
-        "Colors side by side on the color wheel",
-        "Colors mixed with black or white",
-        "Three primary colors"
-      ],
-      "answer": "Colors side by side on the color wheel",
-      "explanation": "Analogous colors are next to each other on the color wheel and usually match well to create serene and comfortable designs."
-    }
-  ]
-  
+  {
+    "question": "What is tint?",
+    "options": [
+      "A mixture of a color with white",
+      "A mixture of a color with black",
+      "A mixture of three colors",
+      "A mixture of colors that are complementary"
+    ],
+    "answer": "A mixture of a color with white",
+    "explanation": "Tint refers to a mixture of a color with white. When white is added to a color, it lightens the shade, creating a lighter version of the original color."
+  },
+  {
+    "question": "A mixture of a color with black is what?",
+    "options": ["Value", "Tint", "Saturation", "Shade"],
+    "answer": "Shade",
+    "explanation": "When a color is mixed with black, it becomes darker and less vibrant. This darkened version of the color is called a shade."
+  },
+  {
+    "question": "What does color do?",
+    "options": [
+      "Fills in empty spaces",
+      "Makes things artsy",
+      "Colors can draw attention; have an emotional and psychological impact",
+      "Takes up space"
+    ],
+    "answer": "Colors can draw attention; have an emotional and psychological impact",
+    "explanation": "Different colors can evoke emotions and moods. They can highlight elements and create visual interest in a composition."
+  },
+  {
+    "question": "Colors that are across from each other on a color wheel are called?",
+    "options": ["Analogous", "Tertiary", "Complementary", "Additive"],
+    "answer": "Complementary",
+    "explanation": "Complementary colors are pairs that create a strong contrast because they are on opposite sides of the color wheel."
+  },
+  {
+    "question": "Warm colors are usually associated with what kind of emotion?",
+    "options": ["Peace", "Passiveness", "Laziness", "Aggression"],
+    "answer": "Aggression",
+    "explanation": "Warm colors like red, orange, and yellow are associated with energy, intensity, and sometimes aggression."
+  },
+  {
+    "question": "What is color?",
+    "options": [
+      "Used in paints, dyes, and ink made by absorbing wavelengths of light",
+      "A substance used to give something a particular color",
+      "Pigmentation of the skin",
+      "The property possessed by an object of producing different sensations on the eye"
+    ],
+    "answer": "The property possessed by an object of producing different sensations on the eye",
+    "explanation": "Color is the visual sensation caused by the way an object reflects or emits light, perceived by the eye."
+  },
+  {
+    "question": "Colors are said to be contrasting if they are _____________.",
+    "options": ["Different in hue", "Different in lightness and darkness", "Different in saturation", "Similar in tone"],
+    "answer": "Different in lightness and darkness",
+    "explanation": "Contrasting colors stand out from each other due to differences in lightness and darkness."
+  },
+  {
+    "question": "Formal balance is another word for which type of balance?",
+    "options": ["Symmetrical", "Asymmetrical", "Radial", "Dynamic"],
+    "answer": "Symmetrical",
+    "explanation": "Formal balance refers to symmetry, where elements are evenly arranged to create a sense of stability."
+  },
+  {
+    "question": "Rhythm in design is:",
+    "options": [
+      "The use of contrasting colors",
+      "The repetition or alternation of elements to create movement",
+      "The brightness of colors",
+      "The use of complementary hues"
+    ],
+    "answer": "The repetition or alternation of elements to create movement",
+    "explanation": "Rhythm is created by repeating visual elements in a pattern, leading the viewer’s eye through the composition."
+  },
+  {
+    "question": "Analogous colors are:",
+    "options": [
+      "Colors opposite each other on the color wheel",
+      "Colors side by side on the color wheel",
+      "Colors mixed with black or white",
+      "Three primary colors"
+    ],
+    "answer": "Colors side by side on the color wheel",
+    "explanation": "Analogous colors are next to each other on the color wheel and usually match well to create serene and comfortable designs."
+  },
+  {
+    "question": "What does the 'C' in the C.R.A.P. design principle stand for?",
+    "options": ["Color", "Contrast", "Clarity", "Consistency"],
+    "answer": "Contrast",
+    "explanation": "Contrast helps differentiate elements, guiding the viewer’s attention and improving visual hierarchy."
+  },
+  {
+    "question": "Why is contrast important in UI design?",
+    "options": [
+      "It makes everything look the same",
+      "It helps users focus on key elements",
+      "It reduces visual clarity",
+      "It adds unnecessary decoration"
+    ],
+    "answer": "It helps users focus on key elements",
+    "explanation": "Contrast emphasizes differences between elements, improving readability and drawing attention to important areas."
+  },
+  {
+    "question": "The 'R' in C.R.A.P. stands for:",
+    "options": ["Repetition", "Reflection", "Resolution", "Rhythm"],
+    "answer": "Repetition",
+    "explanation": "Repetition creates unity and consistency by using the same visual elements throughout a design."
+  },
+  {
+    "question": "Which C.R.A.P. principle improves readability and alignment between text and images?",
+    "options": ["Proximity", "Contrast", "Repetition", "Alignment"],
+    "answer": "Alignment",
+    "explanation": "Alignment ensures visual connection between elements, making a design feel more organized and professional."
+  },
+  {
+    "question": "What does proximity help achieve in a design?",
+    "options": [
+      "Separates unrelated elements",
+      "Groups related items together",
+      "Creates random spacing",
+      "Adds more contrast"
+    ],
+    "answer": "Groups related items together",
+    "explanation": "Proximity helps users understand relationships between elements by grouping related content closely together."
+  },
+  {
+    "question": "In composition, what is visual hierarchy?",
+    "options": [
+      "A random arrangement of elements",
+      "Organizing elements by importance",
+      "Using only one color",
+      "Aligning everything to the left"
+    ],
+    "answer": "Organizing elements by importance",
+    "explanation": "Visual hierarchy guides the viewer’s eye through a design based on the importance and prominence of elements."
+  },
+  {
+    "question": "A good composition usually leads the viewer’s eye to what?",
+    "options": [
+      "The center of the screen",
+      "The designer’s signature",
+      "The focal point",
+      "The background details"
+    ],
+    "answer": "The focal point",
+    "explanation": "A focal point is the most important element in a composition, guiding attention and reinforcing the message."
+  },
+  {
+    "question": "Which layout principle keeps the design consistent across different pages or screens?",
+    "options": ["Proximity", "Repetition", "Contrast", "Balance"],
+    "answer": "Repetition",
+    "explanation": "Repetition helps maintain visual consistency, making interfaces predictable and cohesive for users."
+  },
+  {
+    "question": "Which principle deals with making text and elements visually distinct?",
+    "options": ["Contrast", "Repetition", "Proximity", "Hierarchy"],
+    "answer": "Contrast",
+    "explanation": "Contrast differentiates elements like text, colors, and shapes, making content easier to scan and understand."
+  },
+  {
+    "question": "When elements are too far apart and unrelated, which principle is being broken?",
+    "options": ["Alignment", "Proximity", "Repetition", "Contrast"],
+    "answer": "Proximity",
+    "explanation": "Poor proximity leads to confusion because users can’t tell which items belong together."
+  },
+  {
+    "question": "What is negative space?",
+    "options": [
+      "The area filled with elements",
+      "The empty space around and between design elements",
+      "A background color layer",
+      "A dark portion of an image"
+    ],
+    "answer": "The empty space around and between design elements",
+    "explanation": "Negative space, or white space, improves focus and readability by giving the design room to breathe."
+  },
+  {
+    "question": "Which of the following best defines unity in design?",
+    "options": [
+      "Random arrangement of shapes",
+      "A consistent relationship among elements",
+      "Extreme use of contrast",
+      "The use of many colors"
+    ],
+    "answer": "A consistent relationship among elements",
+    "explanation": "Unity is achieved when all design elements work together to create a cohesive and harmonious composition."
+  },
+  {
+    "question": "Which type of balance creates movement and energy in design?",
+    "options": ["Symmetrical", "Asymmetrical", "Radial", "Formal"],
+    "answer": "Asymmetrical",
+    "explanation": "Asymmetrical balance uses uneven distribution to create interest and visual tension."
+  },
+  {
+    "question": "What is the main purpose of alignment in composition?",
+    "options": [
+      "To make the layout look random",
+      "To create order and connection between elements",
+      "To add more colors",
+      "To make text harder to read"
+    ],
+    "answer": "To create order and connection between elements",
+    "explanation": "Alignment visually connects related content, improving organization and flow."
+  },
+  {
+    "question": "In a UI layout, why should text and buttons align properly?",
+    "options": [
+      "Because misalignment looks dynamic",
+      "Because it creates consistency and professionalism",
+      "Because users don’t notice it",
+      "Because it hides visual hierarchy"
+    ],
+    "answer": "Because it creates consistency and professionalism",
+    "explanation": "Proper alignment helps users process information easily and improves aesthetic appeal."
+  },
+  {
+    "question": "Which of the following is NOT part of the C.R.A.P. principles?",
+    "options": ["Contrast", "Repetition", "Animation", "Proximity"],
+    "answer": "Animation",
+    "explanation": "Animation is a motion design concept, not part of the four foundational design principles."
+  },
+  {
+    "question": "What does consistency in UI design help with?",
+    "options": [
+      "Increasing confusion",
+      "Improving user familiarity and experience",
+      "Making each page look different",
+      "Adding more random elements"
+    ],
+    "answer": "Improving user familiarity and experience",
+    "explanation": "Consistency helps users recognize patterns, making the interface easier to navigate and learn."
+  },
+  {
+    "question": "What is the main goal of composition in design?",
+    "options": [
+      "To fill the entire canvas",
+      "To organize visual elements for clear communication",
+      "To use as many colors as possible",
+      "To avoid symmetry"
+    ],
+    "answer": "To organize visual elements for clear communication",
+    "explanation": "Composition arranges elements intentionally to convey messages effectively and guide the viewer’s attention."
+  },
+  {
+    "question": "What happens when there is too much repetition?",
+    "options": [
+      "The design feels unified",
+      "The design becomes boring or predictable",
+      "The contrast increases",
+      "It improves balance"
+    ],
+    "answer": "The design becomes boring or predictable",
+    "explanation": "While repetition builds unity, overusing it can make the design monotonous and unengaging."
+  },
+  {
+    "question": "Which element in composition determines where the viewer’s attention goes first?",
+    "options": ["Texture", "Balance", "Focal point", "Symmetry"],
+    "answer": "Focal point",
+    "explanation": "The focal point is the main area of interest that captures attention immediately."
+  }
+]

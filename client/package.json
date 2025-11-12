@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/montserrat": "^5.2.7",
     "framer-motion": "^12.23.22",
+    "konva": "^10.0.8",
     "lucide-react": "^0.553.0",
     "motion": "^12.23.22",
     "react": "^19.1.1",
