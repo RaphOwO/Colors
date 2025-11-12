@@ -26,8 +26,10 @@ function App() {
   }, []);
 
   const handleLogout = () =>{
-    localStorage.removeItem("token")
-    setUser(null)
+    if(window.confirm("Do you want to Logout?")){
+      localStorage.removeItem("token")
+      setUser(null)
+    }
   }
 
   return (
