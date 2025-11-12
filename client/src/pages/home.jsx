@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Section from "../components/section.jsx";
 import transition from "../components/transition.jsx";
+import PageFooter from "../components/footer.jsx";
 import "../App.css";
 import "../styles/home.css";
 
@@ -120,6 +121,7 @@ function Home() {
               </div>
             </section>
           </div>
+          <PageFooter/>
         </div>
       </Section>
     </div>

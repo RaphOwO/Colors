@@ -1,15 +1,13 @@
-/* === Global Layout (below fixed 80px navbar) === */
 .canvas-layout {
   display: flex;
   height: calc(100vh - 80px);
   width: 100%;
-  margin-top: 80px; /* sits under fixed navbar */
+  margin-top: 80px; 
   overflow: hidden;
   background: #f7f8fa;
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
-/* === Sidebar (minimal) === */
 .left-panel {
   width: 0;
   background: rgba(255, 255, 255, 0.7);

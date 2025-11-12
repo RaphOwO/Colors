@@ -12,6 +12,7 @@ import Login from './components/login.jsx';
 import Canvas from './pages/canvas.jsx';
 import CompositionTheory from './pages/compositionTheory.jsx';
 import TestPage from './pages/test.jsx';
+import { confirmAlert } from "./components/confirm.jsx";
 import { getCurrentUser } from "./utils/auth";
 
 function ScrollToTop() {
@@ -42,8 +43,16 @@ function App() {
     fetchUser();
   }, []);
 
-  const handleLogout = () =>{
-    if(window.confirm("Do you want to Logout?")){
+  const handleLogout = async() =>{
+    const ok = await confirmAlert({
+      iconType: "warning",
+      title: "Log out?",
+      message: "Do you want to Logout?",
+      iconBg: "#FEF3C7",  
+      iconColor: "#92400E",
+      snackScale: 1.1,
+    });
+    if(ok){
       localStorage.removeItem("token")
       setUser(null)
     }
