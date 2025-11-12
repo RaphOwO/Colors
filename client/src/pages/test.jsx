@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { isLoggedIn } from "../utils/checkLogin";
 import "./../styles/forbidden.css";
 import "./../styles/testpage.css";
+import transition from "../components/transition";
+import Section from "../components/section";
 import testData from "../content/test.json";
 
 function TestPage({ user }) {
@@ -65,74 +67,76 @@ function TestPage({ user }) {
   };
 
   return (
-    <div className="testpage-container">
-      <div className="test-box">
-        {!finished ? (
-          <>
-            <h1>Colors Test</h1>
-            <h3>
-              Question {current + 1} of {questions.length}
-            </h3>
-            <p className="question">{question.question}</p>
+    <Section color="black">
+      <div className="testpage-container">
+        <div className="test-box">
+          {!finished ? (
+            <>
+              <h1>Colors Test</h1>
+              <h3>
+                Question {current + 1} of {questions.length}
+              </h3>
+              <p className="question">{question.question}</p>
 
-            <div className="options">
-              {question.options.map((option, index) => {
-                let className = "option-btn";
-                if (submitted) {
-                  if (option === question.answer) className += " correct";
-                  else if (option === selected) className += " wrong";
-                  else className += " disabled";
-                } else if (selected === option) className += " selected";
-                return (
-                  <button
-                    key={index}
-                    className={className}
-                    onClick={() => handleOptionClick(option)}
-                    disabled={submitted}
-                  >
-                    {option}
-                  </button>
-                );
-              })}
-            </div>
-
-            {submitted ? (
-              <div className="explain-box">
-                <p>{selected === question.answer ? "Correct!" : "Wrong!"}</p>
-                <p>{question.explanation}</p>
-                <button className="next-btn" onClick={handleNext}>
-                  {current + 1 === questions.length ? "Finish" : "Next"}
-                </button>
+              <div className="options">
+                {question.options.map((option, index) => {
+                  let className = "option-btn";
+                  if (submitted) {
+                    if (option === question.answer) className += " correct";
+                    else if (option === selected) className += " wrong";
+                    else className += " disabled";
+                  } else if (selected === option) className += " selected";
+                  return (
+                    <button
+                      key={index}
+                      className={className}
+                      onClick={() => handleOptionClick(option)}
+                      disabled={submitted}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
               </div>
-            ) : (
-              <button
-                className="next-btn"
-                onClick={handleSubmit}
-                disabled={!selected}
-              >
-                Submit
+
+              {submitted ? (
+                <div className="explain-box">
+                  <p>{selected === question.answer ? "Correct!" : "Wrong!"}</p>
+                  <p>{question.explanation}</p>
+                  <button className="next-btn" onClick={handleNext}>
+                    {current + 1 === questions.length ? "Finish" : "Next"}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="next-btn"
+                  onClick={handleSubmit}
+                  disabled={!selected}
+                >
+                  Submit
+                </button>
+              )}
+            </>
+          ) : (
+            <div className="result-box">
+              <img
+                className="color-img"
+                src="https://www.pngmart.com/files/23/Color-Wheel-PNG-Photos.png"
+                alt="Good image"
+              />
+              <h2>Test Completed!</h2>
+              <p>
+                You scored {score} out of {questions.length}.
+              </p>
+              <button className="next-btn" onClick={handleRestart}>
+                Try Again
               </button>
-            )}
-          </>
-        ) : (
-          <div className="result-box">
-            <img
-              className="color-img"
-              src="https://www.pngmart.com/files/23/Color-Wheel-PNG-Photos.png"
-              alt="Good image"
-            />
-            <h2>Test Completed!</h2>
-            <p>
-              You scored {score} out of {questions.length}.
-            </p>
-            <button className="next-btn" onClick={handleRestart}>
-              Try Again
-            </button>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Section>
   );
 }
 
-export default TestPage;
+export default transition(TestPage);

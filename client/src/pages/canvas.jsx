@@ -11,6 +11,8 @@ import {
   Image as KonvaImage,
 } from "react-konva";
 import "../styles/Canvas.css";
+import transition from "../components/transition";
+import Section from "../components/section";
 
 function useContainerSize(ref) {
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -228,8 +230,8 @@ const Shape = ({
   return null;
 };
 
-/* ---------- Main Canvas ---------- */
-export default function Canvas() {
+
+function Canvas() {
   const [shapes, _setShapes] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]); 
   const [contextMenu, setContextMenu] = useState(null);
@@ -740,408 +742,412 @@ export default function Canvas() {
     selectedIds.every((id) => (shapes.find((s) => s.id === id) || {}).locked);
 
   return (
-    <div className="canvas-layout" onContextMenu={(e) => e.preventDefault()}>
-      <aside className={`left-panel ${sidebarOpen ? "open" : ""}`}>
-        <button className="toggle-btn" onClick={() => setSidebarOpen((p) => !p)}>
-          {sidebarOpen ? "◀" : "▶"}
-        </button>
+    <Section color="black">
+      <div className="canvas-layout" onContextMenu={(e) => e.preventDefault()}>
+        <aside className={`left-panel ${sidebarOpen ? "open" : ""}`}>
+          <button className="toggle-btn" onClick={() => setSidebarOpen((p) => !p)}>
+            {sidebarOpen ? "◀" : "▶"}
+          </button>
 
-        <div className="sidebar-content">
-          <button onClick={saveSnapshot}>Save</button>
-          <button onClick={loadSnapshot}>Load</button>
-          <button onClick={clearDesign}>Clear</button>
-        </div>
-      </aside>
+          <div className="sidebar-content">
+            <button onClick={saveSnapshot}>Save</button>
+            <button onClick={loadSnapshot}>Load</button>
+            <button onClick={clearDesign}>Clear</button>
+          </div>
+        </aside>
 
-      <main className="canvas-main">
-        <div className="canvas-surface" ref={surfaceRef}>
-          <Stage
-            ref={stageRef}
-            width={surfaceW}
-            height={surfaceH}
-            onMouseDown={handleStageMouseDown}
-            onMouseMove={handleStageMouseMove}
-            onMouseUp={handleStageMouseUp}
-          >
-            <Layer>
-              {shapes.map((shape) => (
-                <Shape
-                  key={shape.id}
-                  shape={shape}
-                  isSelected={selectedIds.includes(shape.id)}
-                  isEditingText={editor?.id === shape.id}
-                  onSelect={onShapeSelect(shape.id)}
-                  onChange={(newAttrs) => updateShape(shape.id, newAttrs)}
-                  onRightClick={handleRightClick}
-                  onStartTextEdit={onStartTextEdit}
-                  registerRef={registerRef}
-                />
-              ))}
-
-              {selRect && selRect.visible && (
-                <Rect
-                  x={selRect.x}
-                  y={selRect.y}
-                  width={selRect.width}
-                  height={selRect.height}
-                  fill="rgba(0, 120, 255, 0.1)"
-                  stroke="rgba(0, 120, 255, 0.6)"
-                  dash={[4, 4]}
-                />
-              )}
-            </Layer>
-
-            {selectionBBox && (
+        <main className="canvas-main">
+          <div className="canvas-surface" ref={surfaceRef}>
+            <Stage
+              ref={stageRef}
+              width={surfaceW}
+              height={surfaceH}
+              onMouseDown={handleStageMouseDown}
+              onMouseMove={handleStageMouseMove}
+              onMouseUp={handleStageMouseUp}
+            >
               <Layer>
-                <Rect
-                  x={selectionBBox.x}
-                  y={selectionBBox.y}
-                  width={selectionBBox.width}
-                  height={selectionBBox.height}
-                  fill="rgba(0,0,0,0.001)"         
-                  strokeEnabled={false}
-                  draggable
-                  onDragStart={(e) => {
-                    dragProxyPosRef.current = e.target.getAbsolutePosition();
-                  }}
-                  onDragMove={(e) => {
-                    if (!dragProxyPosRef.current) return;
-                    const p = e.target.getAbsolutePosition();
-                    const dx = p.x - dragProxyPosRef.current.x;
-                    const dy = p.y - dragProxyPosRef.current.y;
+                {shapes.map((shape) => (
+                  <Shape
+                    key={shape.id}
+                    shape={shape}
+                    isSelected={selectedIds.includes(shape.id)}
+                    isEditingText={editor?.id === shape.id}
+                    onSelect={onShapeSelect(shape.id)}
+                    onChange={(newAttrs) => updateShape(shape.id, newAttrs)}
+                    onRightClick={handleRightClick}
+                    onStartTextEdit={onStartTextEdit}
+                    registerRef={registerRef}
+                  />
+                ))}
 
-                    isApplyingHistory.current = true;
-                    _setShapes((prev) =>
-                      prev.map((s) =>
-                        selectedIds.includes(s.id)
-                          ? { ...s, x: (s.x || 0) + dx, y: (s.y || 0) + dy }
-                          : s
-                      )
-                    );
-                    isApplyingHistory.current = false;
+                {selRect && selRect.visible && (
+                  <Rect
+                    x={selRect.x}
+                    y={selRect.y}
+                    width={selRect.width}
+                    height={selRect.height}
+                    fill="rgba(0, 120, 255, 0.1)"
+                    stroke="rgba(0, 120, 255, 0.6)"
+                    dash={[4, 4]}
+                  />
+                )}
+              </Layer>
 
-                    dragProxyPosRef.current = p;
-                  }}
-                  onDragEnd={() => {
-                    dragProxyPosRef.current = null;
-                  }}
-                  listening
+              {selectionBBox && (
+                <Layer>
+                  <Rect
+                    x={selectionBBox.x}
+                    y={selectionBBox.y}
+                    width={selectionBBox.width}
+                    height={selectionBBox.height}
+                    fill="rgba(0,0,0,0.001)"         
+                    strokeEnabled={false}
+                    draggable
+                    onDragStart={(e) => {
+                      dragProxyPosRef.current = e.target.getAbsolutePosition();
+                    }}
+                    onDragMove={(e) => {
+                      if (!dragProxyPosRef.current) return;
+                      const p = e.target.getAbsolutePosition();
+                      const dx = p.x - dragProxyPosRef.current.x;
+                      const dy = p.y - dragProxyPosRef.current.y;
+
+                      isApplyingHistory.current = true;
+                      _setShapes((prev) =>
+                        prev.map((s) =>
+                          selectedIds.includes(s.id)
+                            ? { ...s, x: (s.x || 0) + dx, y: (s.y || 0) + dy }
+                            : s
+                        )
+                      );
+                      isApplyingHistory.current = false;
+
+                      dragProxyPosRef.current = p;
+                    }}
+                    onDragEnd={() => {
+                      dragProxyPosRef.current = null;
+                    }}
+                    listening
+                  />
+                </Layer>
+              )}
+
+              <Layer>
+                <Transformer
+                  ref={trRef}
+                  rotateEnabled={true}
                 />
               </Layer>
-            )}
+            </Stage>
 
-            <Layer>
-              <Transformer
-                ref={trRef}
-                rotateEnabled={true}
+            <div className="bottom-toolbar">
+              <button onClick={undo} title="Undo (Ctrl/Cmd+Z)" aria-label="Undo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+                  <path d="M9 7l-5 5 5 5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M20 12h-13" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button onClick={redo} title="Redo (Ctrl/Cmd+Shift+Z or Y)" aria-label="Redo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+                  <path d="M15 7l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M4 12h13" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              <div className="sep" />
+
+              <button onClick={() => addShape("rect")} title="Rectangle" aria-label="Rectangle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M4 4H20V20H4V4Z" /></svg>
+              </button>
+              <button onClick={() => addShape("circle")} title="Ellipse" aria-label="Ellipse">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" /></svg>
+              </button>
+              <button onClick={() => addShape("triangle")} title="Triangle" aria-label="Triangle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2L2 22h20L12 2z" /></svg>
+              </button>
+              <button onClick={() => addShape("line")} title="Line" aria-label="Line">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.6">
+                  <path d="M4 18L20 6" strokeLinecap="round" />
+                </svg>
+              </button>
+              <button onClick={() => addShape("text")} title="Text" aria-label="Text">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M17 6H7M12 6v12" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button onClick={triggerAddImage} title="Image" aria-label="Image">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.6">
+                  <path d="M4 6h16v12H4z" />
+                  <path d="M7 13l3-3 4 4 3-3 2 2" />
+                  <circle cx="9" cy="9" r="1.5" />
+                </svg>
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                style={{ display: "none" }}
+                onChange={onFilesSelected}
               />
-            </Layer>
-          </Stage>
 
-          <div className="bottom-toolbar">
-            <button onClick={undo} title="Undo (Ctrl/Cmd+Z)" aria-label="Undo">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M9 7l-5 5 5 5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M20 12h-13" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button onClick={redo} title="Redo (Ctrl/Cmd+Shift+Z or Y)" aria-label="Redo">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M15 7l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M4 12h13" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+              <div className="sep" />
 
-            <div className="sep" />
+              <button onClick={duplicateSelected} title="Duplicate (Cmd/Ctrl+D)" aria-label="Duplicate">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <rect x="9" y="9" width="10" height="10" rx="2" />
+                  <rect x="5" y="5" width="10" height="10" rx="2" />
+                </svg>
+              </button>
+              <button onClick={bringToFrontSelected} title="Bring front" aria-label="Bring front">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M12 7V3" />
+                  <path d="M8 7h8" />
+                  <rect x="6" y="7" width="12" height="10" rx="2" />
+                  <path d="M8 21h8" />
+                </svg>
+              </button>
+              <button onClick={sendToBackSelected} title="Send back" aria-label="Send back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M12 17v4" />
+                  <path d="M8 17h8" />
+                  <rect x="6" y="7" width="12" height="10" rx="2" />
+                  <path d="M8 3h8" />
+                </svg>
+              </button>
+              <button onClick={deleteSelected} title="Delete (Del/Backspace)" aria-label="Delete">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M3 6h18" />
+                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                  <path d="M10 11v6M14 11v6" />
+                </svg>
+              </button>
+            </div>
 
-            <button onClick={() => addShape("rect")} title="Rectangle" aria-label="Rectangle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M4 4H20V20H4V4Z" /></svg>
-            </button>
-            <button onClick={() => addShape("circle")} title="Ellipse" aria-label="Ellipse">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" /></svg>
-            </button>
-            <button onClick={() => addShape("triangle")} title="Triangle" aria-label="Triangle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.2"><path d="M12 2L2 22h20L12 2z" /></svg>
-            </button>
-            <button onClick={() => addShape("line")} title="Line" aria-label="Line">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.6">
-                <path d="M4 18L20 6" strokeLinecap="round" />
-              </svg>
-            </button>
-            <button onClick={() => addShape("text")} title="Text" aria-label="Text">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M17 6H7M12 6v12" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button onClick={triggerAddImage} title="Image" aria-label="Image">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.6">
-                <path d="M4 6h16v12H4z" />
-                <path d="M7 13l3-3 4 4 3-3 2 2" />
-                <circle cx="9" cy="9" r="1.5" />
-              </svg>
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              style={{ display: "none" }}
-              onChange={onFilesSelected}
-            />
+            {contextMenu && (() => {
+              const isSingle = selectedIds.length === 1;
+              const s = isSingle ? shapes.find((x) => x.id === selectedIds[0]) : null;
+              const isText = isSingle && s?.type === "text";
+              const isLineOrShape =
+                isSingle &&
+                (s?.type === "rect" ||
+                  s?.type === "circle" ||
+                  s?.type === "triangle" ||
+                  s?.type === "line");
 
-            <div className="sep" />
+              return (
+                <div
+                  className="context-menu"
+                  style={{
+                    top: Math.max(8, contextMenu.y + 8),
+                    left: Math.max(8, contextMenu.x + 8),
+                  }}
+                >
+                  {isSingle && isLineOrShape && (
+                    <>
+                      <div className="row">
+                        <label>
+                          Fill
+                          <input
+                            type="color"
+                            value={s.fill || "#111"}
+                            onChange={(e) =>
+                              updateShape(s.id, { ...s, fill: e.target.value })
+                            }
+                          />
+                        </label>
+                        <label>
+                          Stroke
+                          <input
+                            type="color"
+                            value={s.stroke || "#000"}
+                            onChange={(e) =>
+                              updateShape(s.id, { ...s, stroke: e.target.value })
+                            }
+                          />
+                        </label>
+                      </div>
+                      <div className="row">
+                        <label>
+                          Stroke W
+                          <input
+                            type="range"
+                            min="0"
+                            max="12"
+                            step="1"
+                            value={s.strokeWidth ?? 1}
+                            onChange={(e) =>
+                              updateShape(s.id, {
+                                ...s,
+                                strokeWidth: +e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          Opacity
+                          <input
+                            type="range"
+                            min="0.1"
+                            max="1"
+                            step="0.05"
+                            value={s.opacity ?? 1}
+                            onChange={(e) =>
+                              updateShape(s.id, {
+                                ...s,
+                                opacity: +e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                      </div>
+                    </>
+                  )}
 
-            <button onClick={duplicateSelected} title="Duplicate (Cmd/Ctrl+D)" aria-label="Duplicate">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <rect x="9" y="9" width="10" height="10" rx="2" />
-                <rect x="5" y="5" width="10" height="10" rx="2" />
-              </svg>
-            </button>
-            <button onClick={bringToFrontSelected} title="Bring front" aria-label="Bring front">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M12 7V3" />
-                <path d="M8 7h8" />
-                <rect x="6" y="7" width="12" height="10" rx="2" />
-                <path d="M8 21h8" />
-              </svg>
-            </button>
-            <button onClick={sendToBackSelected} title="Send back" aria-label="Send back">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M12 17v4" />
-                <path d="M8 17h8" />
-                <rect x="6" y="7" width="12" height="10" rx="2" />
-                <path d="M8 3h8" />
-              </svg>
-            </button>
-            <button onClick={deleteSelected} title="Delete (Del/Backspace)" aria-label="Delete">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M3 6h18" />
-                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                <path d="M10 11v6M14 11v6" />
-              </svg>
-            </button>
-          </div>
-
-          {contextMenu && (() => {
-            const isSingle = selectedIds.length === 1;
-            const s = isSingle ? shapes.find((x) => x.id === selectedIds[0]) : null;
-            const isText = isSingle && s?.type === "text";
-            const isLineOrShape =
-              isSingle &&
-              (s?.type === "rect" ||
-                s?.type === "circle" ||
-                s?.type === "triangle" ||
-                s?.type === "line");
-
-            return (
-              <div
-                className="context-menu"
-                style={{
-                  top: Math.max(8, contextMenu.y + 8),
-                  left: Math.max(8, contextMenu.x + 8),
-                }}
-              >
-                {isSingle && isLineOrShape && (
-                  <>
+                  {isSingle && isText && (
                     <div className="row">
                       <label>
-                        Fill
-                        <input
-                          type="color"
-                          value={s.fill || "#111"}
-                          onChange={(e) =>
-                            updateShape(s.id, { ...s, fill: e.target.value })
-                          }
-                        />
-                      </label>
-                      <label>
-                        Stroke
-                        <input
-                          type="color"
-                          value={s.stroke || "#000"}
-                          onChange={(e) =>
-                            updateShape(s.id, { ...s, stroke: e.target.value })
-                          }
-                        />
-                      </label>
-                    </div>
-                    <div className="row">
-                      <label>
-                        Stroke W
+                        Font Size
                         <input
                           type="range"
-                          min="0"
-                          max="12"
+                          min="10"
+                          max="96"
                           step="1"
-                          value={s.strokeWidth ?? 1}
+                          value={s.fontSize ?? 22}
                           onChange={(e) =>
                             updateShape(s.id, {
                               ...s,
-                              strokeWidth: +e.target.value,
+                              fontSize: +e.target.value,
                             })
                           }
                         />
                       </label>
-                      <label>
-                        Opacity
-                        <input
-                          type="range"
-                          min="0.1"
-                          max="1"
-                          step="0.05"
-                          value={s.opacity ?? 1}
-                          onChange={(e) =>
-                            updateShape(s.id, {
-                              ...s,
-                              opacity: +e.target.value,
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
-                  </>
-                )}
-
-                {isSingle && isText && (
-                  <div className="row">
-                    <label>
-                      Font Size
-                      <input
-                        type="range"
-                        min="10"
-                        max="96"
-                        step="1"
-                        value={s.fontSize ?? 22}
-                        onChange={(e) =>
-                          updateShape(s.id, {
-                            ...s,
-                            fontSize: +e.target.value,
-                          })
+                      <button
+                        className="ghost-btn"
+                        onClick={() =>
+                          onStartTextEdit(
+                            s,
+                            stageRef.current.findOne(`#${s.id}`)
+                          )
                         }
-                      />
-                    </label>
+                      >
+                        Edit text
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="full">
+                    <button className="ghost-btn" onClick={duplicateSelected} title="Duplicate">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <rect x="9" y="9" width="10" height="10" rx="2" />
+                        <rect x="5" y="5" width="10" height="10" rx="2" />
+                      </svg>
+                    </button>
+                    <button className="ghost-btn" onClick={bringToFrontSelected} title="Bring front">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <path d="M12 7V3" />
+                        <path d="M8 7h8" />
+                        <rect x="6" y="7" width="12" height="10" rx="2" />
+                        <path d="M8 21h8" />
+                      </svg>
+                    </button>
+                    <button className="ghost-btn" onClick={sendToBackSelected} title="Send back">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <path d="M12 17v4" />
+                        <path d="M8 17h8" />
+                        <rect x="6" y="7" width="12" height="10" rx="2" />
+                        <path d="M8 3h8" />
+                      </svg>
+                    </button>
+
                     <button
                       className="ghost-btn"
-                      onClick={() =>
-                        onStartTextEdit(
-                          s,
-                          stageRef.current.findOne(`#${s.id}`)
-                        )
-                      }
+                      onClick={toggleLockSelected}
+                      title={allLocked ? "Unlock" : "Lock"}
+                      aria-label={allLocked ? "Unlock selected" : "Lock selected"}
                     >
-                      Edit text
+                      <IconLock locked={allLocked} />
+                    </button>
+
+                    <button
+                      className="ghost-btn"
+                      style={{ color: "#b00020", borderColor: "rgba(176,0,32,0.2)" }}
+                      onClick={deleteSelected}
+                      title="Delete"
+                      aria-label="Delete selected"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        <path d="M3 6h18" />
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                      </svg>
                     </button>
                   </div>
-                )}
-
-                <div className="full">
-                  <button className="ghost-btn" onClick={duplicateSelected} title="Duplicate">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                      <rect x="9" y="9" width="10" height="10" rx="2" />
-                      <rect x="5" y="5" width="10" height="10" rx="2" />
-                    </svg>
-                  </button>
-                  <button className="ghost-btn" onClick={bringToFrontSelected} title="Bring front">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                      <path d="M12 7V3" />
-                      <path d="M8 7h8" />
-                      <rect x="6" y="7" width="12" height="10" rx="2" />
-                      <path d="M8 21h8" />
-                    </svg>
-                  </button>
-                  <button className="ghost-btn" onClick={sendToBackSelected} title="Send back">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                      <path d="M12 17v4" />
-                      <path d="M8 17h8" />
-                      <rect x="6" y="7" width="12" height="10" rx="2" />
-                      <path d="M8 3h8" />
-                    </svg>
-                  </button>
-
-                  <button
-                    className="ghost-btn"
-                    onClick={toggleLockSelected}
-                    title={allLocked ? "Unlock" : "Lock"}
-                    aria-label={allLocked ? "Unlock selected" : "Lock selected"}
-                  >
-                    <IconLock locked={allLocked} />
-                  </button>
-
-                  <button
-                    className="ghost-btn"
-                    style={{ color: "#b00020", borderColor: "rgba(176,0,32,0.2)" }}
-                    onClick={deleteSelected}
-                    title="Delete"
-                    aria-label="Delete selected"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                      <path d="M3 6h18" />
-                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                      <path d="M10 11v6M14 11v6" />
-                    </svg>
-                  </button>
                 </div>
-              </div>
-            );
-          })()}
+              );
+            })()}
 
-          {/* In-place Textarea (Canva-like) */}
-          {editor && (
-            <textarea
-              className="konva-textarea"
-              style={{
-                position: "absolute",
-                left: editor.x -1 + "px",
-                top: editor.y -80 + "px",
-                width: editor.width + "px",
-                minHeight: editor.height + "px",
-                transform: `rotate(${editor.rotation}deg)`,
-                transformOrigin: `${editor.offsetX}px ${editor.offsetY}px`,
-                color: editor.color,
-                fontSize: editor.fontSize + "px",
-                fontFamily: editor.fontFamily,
-                fontWeight: editor.fontWeight,
-                fontStyle: editor.fontStyle,
-                textAlign: editor.align,
-                lineHeight: String(editor.lineHeight),
-                letterSpacing: editor.letterSpacing + "px",
-                padding: editor.padding + "px",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                resize: "none",
-                overflow: "hidden",
-                margin: 0,
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                zIndex: 20,
-              }}
-              autoFocus
-              value={editor.value}
-              onChange={(e) => {
-                const val = e.target.value;
-                setEditor((v) => ({ ...v, value: val }));
-                liveUpdateText(editor.id, val);
-                e.currentTarget.style.height = "auto";
-                e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
-              }}
-              onBlur={commitTextEdit}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  e.preventDefault();
-                  cancelTextEdit();
-                }
-                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-                  e.preventDefault();
-                  commitTextEdit();
-                }
-              }}
-            />
-          )}
-        </div>
-      </main>
-    </div>
+            {/* In-place Textarea (Canva-like) */}
+            {editor && (
+              <textarea
+                className="konva-textarea"
+                style={{
+                  position: "absolute",
+                  left: editor.x -1 + "px",
+                  top: editor.y -80 + "px",
+                  width: editor.width + "px",
+                  minHeight: editor.height + "px",
+                  transform: `rotate(${editor.rotation}deg)`,
+                  transformOrigin: `${editor.offsetX}px ${editor.offsetY}px`,
+                  color: editor.color,
+                  fontSize: editor.fontSize + "px",
+                  fontFamily: editor.fontFamily,
+                  fontWeight: editor.fontWeight,
+                  fontStyle: editor.fontStyle,
+                  textAlign: editor.align,
+                  lineHeight: String(editor.lineHeight),
+                  letterSpacing: editor.letterSpacing + "px",
+                  padding: editor.padding + "px",
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                  resize: "none",
+                  overflow: "hidden",
+                  margin: 0,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  zIndex: 20,
+                }}
+                autoFocus
+                value={editor.value}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setEditor((v) => ({ ...v, value: val }));
+                  liveUpdateText(editor.id, val);
+                  e.currentTarget.style.height = "auto";
+                  e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+                }}
+                onBlur={commitTextEdit}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    e.preventDefault();
+                    cancelTextEdit();
+                  }
+                  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    commitTextEdit();
+                  }
+                }}
+              />
+            )}
+          </div>
+        </main>
+      </div>
+    </Section>
   );
 }
+
+export default transition(Canvas);
