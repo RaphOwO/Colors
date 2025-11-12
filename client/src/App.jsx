@@ -8,11 +8,11 @@ import Navbar from './components/navbar.jsx';
 import Home from './pages/home.jsx';
 import ColorTheory from './pages/colorTheory.jsx';
 import Meaning from './pages/colorMeaning.jsx';
-import Composition from './pages/composition.jsx';
 import Login from './components/login.jsx';
 import Canvas from './pages/canvas.jsx';
 import CompositionTheory from './pages/compositionTheory.jsx';
 import TestPage from './pages/test.jsx';
+import { confirmAlert } from "./components/confirm.jsx";
 import { getCurrentUser } from "./utils/auth";
 
 function ScrollToTop() {
@@ -43,9 +43,19 @@ function App() {
     fetchUser();
   }, []);
 
-  const handleLogout = () =>{
-    localStorage.removeItem("token")
-    setUser(null)
+  const handleLogout = async() =>{
+    const ok = await confirmAlert({
+      iconType: "warning",
+      title: "Log out?",
+      message: "Do you want to Logout?",
+      iconBg: "#FEF3C7",  
+      iconColor: "#92400E",
+      snackScale: 1.1,
+    });
+    if(ok){
+      localStorage.removeItem("token")
+      setUser(null)
+    }
   }
 
   return (
@@ -55,20 +65,14 @@ function App() {
         onLogOutClick={handleLogout}
         user={user}
       />
-
-      <ScrollToTop/>
-      <AnimatePresence mode='wait'>
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
-          <Route path="/color/theory" element={<ColorTheory />} />
-          <Route path="/color/meaning" element={<Meaning/>}/>
-          <Route path="/composition" element={<Composition />} />
-          <Route path="/composition/canvas" element={<Canvas/>}/>
-          <Route path="/composition/theory" element={<CompositionTheory/>}/>
-          <Route path="/test" element={<TestPage user={user} />} />
-        </Routes>
-      </AnimatePresence>
-
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/color/theory" element={<ColorTheory />} />
+        <Route path="/color/meaning" element={<Meaning/>}/>
+        <Route path="/test" element={<TestPage/>}/>
+        <Route path="/composition/canvas" element={<Canvas/>}/>
+        <Route path="/composition/theory" element={<CompositionTheory/>}/>
+      </Routes>
 
       <AnimatePresence>
         {showIntro && <Intro onDone={() => setShowIntro(false)} />}
