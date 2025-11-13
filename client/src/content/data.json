@@ -1,0 +1,30 @@
+[
+  { "topic": "Monochromatic",
+    "content": "Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look."
+  },
+  { "topic": "Complementary",
+    "content": "Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination together, these colors will appear brighter and more prominent."
+  },
+  { "topic": "Analogous",
+    "content": "Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents."
+  },
+  { "topic": "Triadic",
+    "content": "Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination making it more versatile. This combination creates bold, vibrant color palettes."
+  },
+  { "topic": "Tetradic",
+    "content": "Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance."
+  },
+  { "topic": "Warm and Cool Colors",
+    "content": "Warm colors are the colors from red through to yellow. These colors are said to bring to mind warmth, like the sun.\n\nCool colors are the colors from blue to green and purple. These colors are said to bring to mind coolness, like water."
+  },
+  { "topic": "Shade",
+    "content": "A shade is created by adding black to a base hue, darkening the color. This creates a deeper, richer color. Shades can be quite dramatic and can be overpowering."
+  },
+  { "topic": "Tint",
+    "content": "A tint is created by adding white to a base hue, lightening the color. This can make a color less intense, and is useful when balancing more vivid color combinations."
+  },
+  { "topic": "Tones",
+    "content": "A tone is created by combining black and white—or grey—with a base hue. Like tints, tones are subtler versions of the original color. Tones are less likely to look pastel, and can reveal complexities not apparent in the base color."
+  }
+
+]

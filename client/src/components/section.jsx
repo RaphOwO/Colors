@@ -8,49 +8,37 @@ function Section({ color, children }) {
     if (!section) return;
 
     const root = document.documentElement;
-    const navEl = document.querySelector('nav');
-    const navHeight = navEl ? navEl.getBoundingClientRect().height : 0;
-    const probeX = Math.floor(window.innerWidth / 2); // horizontally center probe
-    const probeY = Math.min(window.innerHeight - 1, Math.ceil(navHeight) + 1); // just below navbar
+    const probeX = Math.floor(window.innerWidth / 2);
+    const probeY = Math.floor(window.innerHeight * 0.15); 
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const rect = entry.boundingClientRect;
-          const viewportHeight = window.innerHeight;
+          const ir = entry.intersectionRect;
 
-          const enteringFromTop = rect.top < 0;
-          const enteringFromBottom = rect.bottom > viewportHeight;
+          if (!entry.isIntersecting || !ir || ir.width === 0 || ir.height === 0) {
+            return;
+          }
 
-          if (entry.isIntersecting) {
+          const visibleTop = ir.top;       
+          const visibleBottom = ir.bottom;
+
+          if (visibleTop <= probeY && visibleBottom >= probeY) {
             const newColor = entry.target.getAttribute('data-nav-color');
-
-            // If entering from top and at least 10% visible
-            if (enteringFromTop && entry.intersectionRatio >= 0.1) {
-              root.style.setProperty('--nav-color', newColor);
-              console.log('↓ Entered from above →', newColor);
-            }
-
-            // If entering from bottom and at least 90% visible
-            if (enteringFromBottom && entry.intersectionRatio >= 0.9) {
-              root.style.setProperty('--nav-color', newColor);
-              console.log('↑ Entered from below →', newColor);
-            }
+            root.style.setProperty('--nav-color', newColor);
           }
         });
       },
-      { threshold: [0.1, 0.9] }
+      {
+        threshold: Array.from({ length: 101 }, (_, i) => i / 100),
+      }
     );
 
     observer.observe(section);
 
-    // ---- reliable initial check: only set if this section is really under the navbar ----
-    // Use elementsFromPoint so we test the actual top-most element at the probe coordinate.
     try {
       const elements = document.elementsFromPoint(probeX, probeY);
-      // find the closest ancestor section in the elements list (could be a child inside the section)
       const topSection = elements.find((el) => {
-        // walk up until document or null, check if matches our section
         let cur = el;
         while (cur && cur !== document.body && cur !== document.documentElement) {
           if (cur === section) return true;
@@ -60,18 +48,20 @@ function Section({ color, children }) {
       });
 
       if (topSection) {
-        // This section is actually the one under the navbar — set the color.
         const initialColor = section.getAttribute('data-nav-color');
         root.style.setProperty('--nav-color', initialColor);
-        console.log('Initial color set (by elementsFromPoint) →', initialColor);
+      } else {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= probeY && rect.bottom >= probeY) {
+          const initialColor = section.getAttribute('data-nav-color');
+          root.style.setProperty('--nav-color', initialColor);
+        }
       }
     } catch (err) {
-      // elementsFromPoint can throw in some weird cases; fallback to boundingClientRect check
       const rect = section.getBoundingClientRect();
       if (rect.top <= probeY && rect.bottom >= probeY) {
         const initialColor = section.getAttribute('data-nav-color');
         root.style.setProperty('--nav-color', initialColor);
-        console.log('Initial color set (fallback) →', initialColor);
       }
     }
 
@@ -82,9 +72,7 @@ function Section({ color, children }) {
     <section
       ref={sectionRef}
       data-nav-color={color}
-      style={{
-        width: '100%',
-      }}
+      style={{ width: '100%' }}
     >
       {children}
     </section>

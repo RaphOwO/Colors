@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import Section from "../components/section.jsx";
+import transition from "../components/transition.jsx";
+import img1 from "../assets/homeImg1.png";
+import img2 from "../assets/homeImg2.png";
+import img3 from "../assets/homeImg3.png";
+import PageFooter from "../components/footer.jsx";
 import "../App.css";
 import "../styles/home.css";
 
@@ -34,7 +39,7 @@ function Home() {
 
     const setTopicRef = (el) => {
         if (el && !topicRefs.current.includes(el)) {
-        topicRefs.current.push(el);
+          topicRefs.current.push(el);
         }
     };   
 
@@ -59,7 +64,7 @@ function Home() {
         });
 
         return () => observer.disconnect();
-        }, []); 
+    }, []); 
 
   return (
     <div className="page">
@@ -72,56 +77,50 @@ function Home() {
           }}
         >
           <div ref={heroRef} className="title-content fade-section">
-            <label className="title-message">Welcome</label>
+            <label className="title-message">Designs</label>
             <h1 className="home-title">COLORS</h1>
           </div>
 
           <div className="home-content">
             <section ref={setTopicRef} className="topic-section left">
               <div className="topic-text">
-                <h2>About</h2>
+                <h2>About <label style={{fontFamily: "Ananias"}}>COLORS</label></h2>
                 <p>
-                  COLORS is an educational website focused on the fundamentals of graphic design.
+                  COLORS is an educational website focused on the fundamentals of UI graphic design.
                   It provides clear and engaging explanations about color theory and composition,
-                  with interactive examples and hands-on learning.
+                  with clear step by step guides and examples.
                 </p>
               </div>
+              <img src={img1}></img>
             </section>
 
             <section ref={setTopicRef} className="topic-section right">
               <div className="topic-text">
                 <h2>Color Theory</h2>
                 <p>
-                  Understand how colors interact, evoke emotions, and influence visual hierarchy.
-                  Learn about contrast, harmony, and the psychology behind each hue.
+                  Learn how color influences design through the basics of color theory and the meanings behind different hues.
+                   Discover how choosing the right colors can shape emotions and enhance visual appeal in your UI.
                 </p>
               </div>
+              <img src={img2} style={{width: '50vw'}}></img>
             </section>
 
             <section ref={setTopicRef} className="topic-section left">
               <div className="topic-text">
                 <h2>Composition</h2>
                 <p>
-                  Discover the art of arranging elements with balance and rhythm.
-                  Explore the rules of thirds, symmetry, and flow that guide the viewer’s eye.
+                  Explore the fundamentals of UI composition using the C.R.A.P. principles—Contrast, Repetition, Alignment, and Proximity. 
+                  Understand how these core ideas help create balance, clarity, and visual harmony in effective design.
                 </p>
               </div>
-            </section>
-
-            <section ref={setTopicRef} className="topic-section right">
-              <div className="topic-text">
-                <h2>Tools & Practice</h2>
-                <p>
-                  Access creative exercises and digital tools that help reinforce key design concepts,
-                  improving both understanding and visual intuition.
-                </p>
-              </div>
+              <img src={img3}></img>
             </section>
           </div>
+          <PageFooter/>
         </div>
       </Section>
     </div>
   );
 }
 
-export default Home;
+export default transition(Home);

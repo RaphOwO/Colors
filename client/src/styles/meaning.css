@@ -1,0 +1,582 @@
+.meaning-page {
+    width: 100%;
+    height: fit-content;
+    background-color: whitesmoke;
+}
+
+.titleArea {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    justify-items: center;
+    text-align: center;
+}
+
+.meaning-title {
+    user-select: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: titleDown linear forwards;
+    animation-timeline: scroll();
+    animation-range: 0% 100vh;
+    z-index: 0;
+}
+
+.meaning-title h2 {
+    font-size: clamp(3rem, 10vw, 15rem);
+    margin-bottom: -5%;
+    animation: closer linear forwards;
+    animation-timeline: scroll();
+    animation-range: 0% 100vh;
+}
+
+.meaning-title h1 {
+    font-size: clamp(5rem, 16vw, 25rem);
+    color: rgb(213, 213, 0)
+}
+
+@keyframes titleDown {
+    to { top: 98% }
+}
+
+@keyframes closer {
+    to { margin-bottom: -8%; }
+}
+
+.area {
+  width: 100%;
+  background-color: #121212;
+  color: white;
+  z-index: 2;
+}
+
+.lArea1 {
+  width: 100%;
+  padding-top: 40vh;
+  justify-items: center;
+  text-align: center;
+  gap: 10vh;
+  animation: lArea1 linear forwards;
+  animation-timeline: scroll();
+  animation-range: 40vh 120vh;
+}
+
+.header {
+  font-size: clamp(4rem, 6vw, 15rem);
+}
+
+.bigtext {
+  font-size: clamp(3rem, 5vw, 12rem);
+} 
+
+.text {
+  font-size: clamp(2rem, 4vw, 10rem);
+}
+
+#shrinkInOut {
+  opacity: 0;
+  animation: shrinkInOut linear;
+  animation-timeline: view(5vh 10vh);
+}
+
+.snackbar {
+  anchor-name: --snackbar;
+}
+
+.firstBar {
+  background-color: lightgray;
+}
+
+.circling {
+  opacity: 0;
+  position: fixed;
+  position-anchor: --snackbar;
+  position-area: left center;
+  translate: 75%;
+  width: clamp(3rem, 15vh, 10rem);
+  height: clamp(3rem, 15vh, 10rem);
+  border-top: 5px solid rgb(225, 221, 0);
+  border-bottom: 5px solid red;
+  border-radius: 50%;
+  animation: rotate linear;
+  animation-timeline: scroll();
+  animation-range: 200vh 270vh;
+}
+
+@keyframes rotate {
+  0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  35% { opacity: 1; transform: scale(1) rotate(360deg); }
+  70% { opacity: 1; transform: scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(0.5) rotate(360deg); } 
+}
+
+
+@keyframes shrinkInOut {
+  0% { opacity: 0; transform: scale(0.5); }
+  35% { opacity: 1; transform: scale(1); }
+  70% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.5); }
+}
+
+@keyframes lArea1 {
+    to { padding-top: 20vh; }
+}
+
+.successtext {
+  right: 0;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  padding: 40vh 10vh 0;
+  text-align: right;
+}
+
+.successBar {
+  position: sticky;
+  top: 0;
+  width: 50%;
+  padding-top: 45vh;
+  z-index: 2;
+}
+
+.success {
+  background-color: lightgray;
+  animation: toSuccess linear forwards;
+  animation-timeline: scroll(root);
+  animation-range: 500vh 550vh;
+}
+
+#fadeIn {
+  opacity: 0;
+  animation: fadeIn linear forwards;
+  animation-timeline: view();
+  animation-range: 5% 30%;
+}
+
+@keyframes toSuccess {
+  to {background-color: rgb(169, 223, 158);}
+}
+
+@keyframes fadeIn {
+  to {opacity: 1;}
+}
+
+.lArea2 {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.colorButton {
+  width: clamp(4rem, 20vw, 15rem);
+  height: clamp(2rem,   5vw, 10rem);
+  user-select: none;
+  font-size: 2rem;
+  padding: 1em 2em;
+  background-color: #161a20;
+  border: none;
+  color: white;
+  border-radius: 50rem;
+  position: relative;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18vh;
+  --after-bg: gray;
+}
+
+.colorButton::after {
+  content: '';
+  position: absolute;
+  justify-self: center;
+  width: 102%;   
+  height: 107%; 
+  border-radius: inherit;
+  z-index: -1;  
+  background-color: var(--after-bg); 
+  animation: colorfadeBack linear forwards;
+  animation-timeline: scroll();
+  animation-range: 38.6% 43.3%;
+}
+
+
+.colorButton:hover {
+  z-index: 0;
+}
+
+.literalText1 {
+  width: 60%;
+  text-align: left;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5vw;
+}
+
+.literalText2 {
+  width: 60%;
+  justify-self: end;
+  text-align: right;
+  justify-content: center;
+  align-items: center;
+  padding: 40vh 5vw 0;
+}
+
+.redfade {
+  --bg-color: rgba(245, 114, 114, 1);
+  background-color: var(--bg-color);
+}
+
+.yellowfade {
+  --bg-color: rgb(231, 204, 69);
+  background-color: var(--bg-color);
+}
+
+.greenfade {
+  --bg-color: rgb(156, 230, 129);
+  background-color: var(--bg-color);
+}
+
+.redfade, .yellowfade, .greenfade {
+  animation: iconColor linear forwards;
+  animation-timeline: scroll(root);
+  animation-range: 38.9% 43.7%;
+}
+
+.window {
+  position: fixed;
+  width: max(30vw, 180px);
+  top: 100%;
+  left: 3vw;
+  animation: popUp linear forwards, goesDown linear forwards;
+  animation-timeline: scroll(), scroll();
+  animation-range: 55.2% 56.3%, 60% 61.2%;
+}
+
+#goesOut {
+  animation: goLeft linear forwards, goesOut linear forwards, goesBack linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 38.9% 40.7%, 51.5% 52.9%, 60% 61.3%;
+}
+
+#goesUp {
+  animation: goLeft linear forwards, goesUp linear forwards, goesBack linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 38.9% 40.7%, 51.5% 52.9%, 60% 61.3%;
+}
+
+
+@keyframes goLeft {
+  to {left: -130%}
+}
+
+@keyframes iconColor {
+  0% {background-color: var(--bg-color);}
+  30% {background-color: gray;}
+  80% {background-color: gray;}
+  100% {background-color: var(--bg-color);}
+}
+
+@keyframes colorfadeBack {
+  0% {background-color: var(--after-bg);}
+  30% {background-color: gray;}
+  80% {background-color: gray;}
+  100% {background-color: var(--after-bg);}
+}
+
+@keyframes goesOut {
+  to {margin-top: -30vh;}
+}
+
+@keyframes goesUp {
+  to {margin-top: 30vh;}
+}
+
+@keyframes goesBack {
+  to {margin-top: 0; color: transparent}
+}
+
+@keyframes popUp {
+  to {top: 30%}
+}
+
+@keyframes goesDown {
+  to {top: 100%}
+}
+
+.cArea1 {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.threeColors {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  z-index: 2;
+}
+
+.colorRed {
+  background-color: red;
+  animation: rounder linear forwards, redShift linear forwards;
+  animation-timeline: scroll(), scroll();
+  animation-range: 70.6% 72.5%, 75.9% 77.5%;
+}
+.colorYellow {
+  background-color: rgb(255, 213, 0);
+  animation: rounder linear forwards;
+  animation-timeline: scroll();
+  animation-range: 70.6% 72.5%;
+}
+.colorGreen {
+  background-color: rgb(1, 168, 1);
+  animation: rounder linear forwards, greenShift linear forwards;
+  animation-timeline: scroll(), scroll();
+  animation-range: 70.6% 72.5%, 75.9% 77.5%;
+}
+
+.colorRed, .colorYellow, .colorGreen {
+  width: clamp(4rem, 6vw, 10rem);
+  height: clamp(4rem, 6vw, 10rem);
+  border-radius: 20%;
+}
+
+.traffic {
+  position: fixed;
+  width: max(24vw, 200px);
+  top: 43%;
+  left: 37%;
+  opacity: 0;
+  transform: scale(1.4);
+  pointer-events: none;
+  animation: fadeAppear linear forwards,
+              trafficRight linear forwards,
+              fadeOut linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 72% 73.5%, 72.9% 74.5%, 74.9% 76.5%;
+}
+
+.macIcon {
+  position: fixed;
+  width: max(33vw, 300px);
+  top: 70%;
+  left: 70%;
+  opacity: 0;
+  border-radius: 2rem;
+  transform: scale(3.5);
+  z-index: -1;
+  pointer-events: none;
+  animation: fadeAppear linear forwards, fadeOut linear forwards;
+  animation-timeline: scroll(), scroll();
+  animation-range: 76.5% 78.4%, 80% 81.2%;
+}
+
+.stoptext {
+  position: fixed;
+  width: 20%;
+  top: 50%;
+  left: 5%;
+  opacity: 0;
+  pointer-events: none;
+  font-size: clamp(1rem, 3vw, 2.3rem);
+  animation: fadeAppear linear forwards, fadeOut linear forwards;
+  animation-timeline: scroll(), scroll();
+  animation-range: 78.4% 79.4%, 80% 81.2%;
+}
+
+@keyframes fadeAppear {
+  to {opacity: 1}
+}
+
+@keyframes trafficRight {
+  to {left: 60%}
+}
+
+@keyframes fadeOut {
+  to {opacity: 0;}
+}
+
+@keyframes redShift {
+  to {transform: translateY(135%) translateX(-148%);}
+}
+
+@keyframes greenShift {
+  to {transform: translateY(-135%) translateX(148%);}
+}
+
+@keyframes rounder {
+  to {border-radius: 50%;}
+}
+
+.res {
+  position: fixed;
+  top: 30vh;
+  left: -50%;
+  width: 40vw;
+  height: auto;
+  border-radius: 2rem;
+  animation: slideInLeft linear forwards, slideBackLeft linear forwards;
+  animation-timeline: scroll(), scroll();
+  animation-range: 81.2% 83.3%, 97.5% 98.8%;
+}
+
+#palette {
+  position: fixed;
+  top: 20vh;
+  opacity: 0;
+  width: clamp(3rem, 4vw, 7rem);
+  height: clamp(3rem, 4vw, 7rem);
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.palette1 {
+  left: 40vw;
+  animation: fadeAppear linear forwards, p1 linear forwards, fadeOut linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 87.7% 88.8%, 94.7% 96.1%, 97.1% 98.0%;
+}
+
+.palette2 {
+  left: 35vw;
+  animation: fadeAppear linear forwards, p2 linear forwards, fadeOut linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 87.7% 88.8%, 94.7% 96.1%, 97.1% 98.0%;
+}
+
+.palette3 {
+  left: 30vw;
+  animation: fadeAppear linear forwards, p3 linear forwards, fadeOut linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 87.7% 88.8%, 94.7% 96.1%, 97.1% 98.0%;
+}
+
+.chickenText {
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  text-align: center;
+  justify-self: end;
+  width: 90%;
+  opacity: 0;
+  animation: lowEntry linear;
+  animation-timeline: view();
+  animation-range: 2vh 53vh;
+}
+
+.friedChicken {
+  position: fixed;
+  user-select: none;
+  top: 15vh;
+  right: -40%;
+  opacity: 1;
+  width: 30vw;
+  height: auto;
+  animation: slideInRight linear forwards, blurChic linear forwards, slideBackRight linear forwards;
+  animation-timeline: scroll(), scroll(), scroll();
+  animation-range: 90.9% 91.8%, 93.9% 95.3%, 97.5% 98.8%;
+}
+@keyframes slideInLeft {
+  to {left: 0}
+}
+
+@keyframes slideBackLeft {
+  to {left: -50%}
+}
+
+@keyframes slideInRight {
+  to {right: 10vw} 
+}
+
+@keyframes slideBackRight {
+  to {right: -40%}
+}
+
+@keyframes blurChic {
+  to {filter: blur(10px)}
+}
+
+@keyframes lowEntry {
+  0% {opacity: 0;}
+  30% {opacity: 1;}
+  70% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@keyframes p1 {
+  to {left: 70vw;}
+}
+
+@keyframes p2 {
+  to {top: 30vh; left: 72.5vw}
+}
+
+@keyframes p3 {
+  to {top: 29vh; left: 68vw}
+}
+
+.onde {
+  position:relative;
+  width: 100%;
+  height:15vh;
+  margin-bottom:-7px; 
+  min-height:100px;
+  max-height:150px;
+  fill: none;
+  z-index: 2;
+}
+
+.parallaxonde > use {
+  animation: move-forever 25s cubic-bezier(.55,.5,.45,.5)     infinite;
+}
+.parallaxonde > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+.parallaxonde > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+.parallaxonde > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+.parallaxonde > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+@keyframes move-forever {
+  0% {
+   transform: translate3d(-90px,0,0);
+  }
+  100% { 
+    transform: translate3d(85px,0,0);
+  }
+}
+@media (max-width: 450px) {
+  .onde {
+    height:40px;
+    min-height:40px;
+  }
+
+  .successBar {
+    padding-top: 20vh;
+    justify-self: center;
+    translate: -25%;
+  }
+
+  .successtext {
+    width: 100%;
+    text-align: center;
+  }
+
+  .macIcon {
+    top: 80%;
+    left: 90%;
+  }
+
+  @keyframes goLeft {
+    to {left: -55vw}
+  }
+}
