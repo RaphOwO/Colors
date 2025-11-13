@@ -13,6 +13,10 @@ import {
 import "../styles/Canvas.css";
 import transition from "../components/transition";
 import Section from "../components/section";
+import { confirmAlert } from "../components/confirm.jsx";
+import { snackbarAlert } from "../components/snackbarAlert";
+
+
 
 function useContainerSize(ref) {
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -715,12 +719,26 @@ function Canvas() {
 
   const saveSnapshot = () => {
     localStorage.setItem("design_backup", JSON.stringify(shapes));
-    alert("✅ Saved snapshot!");
+      snackbarAlert({
+        iconType: "success",
+        message: "Snapshot Saved!",
+        iconBg: "rgba(176, 247, 148, 1)",
+        iconColor: "white",
+        duration: 2500,
+      });
   };
-  const loadSnapshot = () => {
+  const loadSnapshot = async() => {
     const saved = localStorage.getItem("design_backup");
     if (saved) {
-      if (window.confirm("Load saved snapshot")) {
+      const ok = await confirmAlert({
+        iconType: "warning",
+        title: "LOAD SNAPSHOT",
+        message: "Load saved snapshot?",
+        iconBg: "#FEF3C7",  
+        iconColor: "#92400E",
+        snackScale: 1.1,
+      });
+      if(ok){
         const parsed = JSON.parse(saved);
         performSetShapes(parsed);
       }
@@ -728,8 +746,16 @@ function Canvas() {
       alert("No saved snapshot found.");
     }
   };
-  const clearDesign = () => {
-    if (window.confirm("Clear all shapes?")) {
+  const clearDesign = async() => {
+    const ok = await confirmAlert({
+      iconType: "warning",
+      title: "CLEAR SHAPES",
+      message: "Clear all shapes?",
+      iconBg: "#FEF3C7",  
+      iconColor: "#92400E",
+      snackScale: 1.1,
+    });
+    if(ok){
       performSetShapes([]);
       setSelectedIds([]);
       setContextMenu(null);
